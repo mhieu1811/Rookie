@@ -1,0 +1,19 @@
+﻿@page
+@model Rookie.Ecom.Customer.Pages.City.CreateModel
+@{
+
+}
+
+    <h1 class="display-4">Welcome</h1>
+    
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="City.CityName">Tên thành phố</label>
+            <input asp-for="City.CityName" />
+        </div>
+        <div>
+            <button class="btn btn-success" type="submit">Submit</button>
+            <button class="btn btn-secondary" type="reset">Clear</button>
+        </div>
+    </form>
+
