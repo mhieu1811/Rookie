@@ -60,10 +60,18 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<CategoryDto>(category);
         }
 
-        public async Task<CategoryDto> GetByNameAsync(string name)
+        public async Task<IEnumerable<CategoryDto>> GetByNameAsync(string name)
         {
-            var category = await _baseRepository.GetByAsync(x => x.CategoryName == name);
-            return _mapper.Map<CategoryDto>(category);
+            var query = _baseRepository.Entities;
+            //string.IsNullOrEmpty 
+            query = query.Where(x => string.IsNullOrEmpty(name) || x.CategoryName.Contains(name));
+
+            query = query.OrderBy(x => x.CategoryName);
+
+            var assets = await query
+                .AsNoTracking()
+                .ToListAsync();
+            return _mapper.Map<List<CategoryDto>>(assets);
         }
 
         public async Task<PagedResponseModel<CategoryDto>> PagedQueryAsync(string name, int page, int limit)

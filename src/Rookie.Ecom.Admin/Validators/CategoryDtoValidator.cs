@@ -25,13 +25,13 @@ namespace Rookie.Ecom.Admin.Validators
 
             
 
-            RuleFor(x => x).MustAsync(
+            /*RuleFor(x => x).MustAsync(
              async (dto, cancellation) =>
              {
-                 var exit = await categoryService.GetByNameAsync(dto.CategoryName);
+                 var exit = await categoryService.GetByNameAsync(dto.CategoryName).;
                  return exit == null || exit.Id != dto.Id;
              }
-          ).WithMessage("Duplicate record");
+          ).WithMessage("Duplicate record");*/
         }
     }
 }

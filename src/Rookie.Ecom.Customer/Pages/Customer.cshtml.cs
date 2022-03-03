@@ -18,12 +18,13 @@ namespace Rookie.Ecom.Customer.Pages
             _categoryService = categoryService;
         }
 
-        public IEnumerable<CategoryDto> Category => _categoryService.GetAllAsync().Result;
+        public IEnumerable<CategoryDto> Category;
          public string Ten { get; set; }
-        
-        public void OnGet()
+        [BindProperty(SupportsGet = true)]
+        public string Keyword { get; set; }
+        public async Task OnGet()
         {
-            
+            Category = await _categoryService.GetByNameAsync(Keyword);
         }
     }
 }

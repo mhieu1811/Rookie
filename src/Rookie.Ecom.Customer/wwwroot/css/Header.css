@@ -457,6 +457,10 @@ padding-top:10px;
     z-index: 1
 }
 
+.center--align-item{
+    align-items:center;
+}
+
 .header.scrolled .header_main {
     display: none
 }
