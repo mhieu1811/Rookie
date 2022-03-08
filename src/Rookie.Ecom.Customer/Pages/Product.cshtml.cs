@@ -12,6 +12,7 @@ namespace Rookie.Ecom.Customer.Pages
     {
         private readonly LinkGenerator linkGenerator;
         private readonly IProductService _productService;
+        
         public ProductModel(LinkGenerator linkGenerator, IProductService productService)
         {
             this.linkGenerator = linkGenerator;

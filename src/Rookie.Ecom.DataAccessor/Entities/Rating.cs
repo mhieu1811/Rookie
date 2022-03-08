@@ -14,8 +14,6 @@ namespace Rookie.Ecom.DataAccessor.Entities
 
         public Guid? UserID { get; set; }
         public User User { get; set; }
-        public Guid? OrderID { get; set; }
-        public Order Order { get; set; }
         public Guid? ProductID { get; set; }
         public Product Product { get; set; }
         public int Rate { get; set; }

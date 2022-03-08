@@ -133,8 +133,8 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer d-flex justify-content-between bg-light border">
-                                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                                <a href="/product/@p.Id" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                                <a  onclick='AddToCart("@p.Id")' class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                                             </div>
                                         </div>
                                     </div>
@@ -182,8 +182,37 @@
         </div>
     </div>
 
-    @section scripts{
-        <script type="text/javascript">
-            
-        </script>
-    }
+@section scripts{
+     <script type="text/javascript">
+         var cart =[];
+         var count = 0;
+         if(localStorage.getItem("cart") != null)
+         {
+             cart= JSON.parse(window.localStorage.getItem("cart"))
+             count= JSON.parse(window.localStorage.getItem("count"))
+         }
+         //var quantity =document.getElementById("soluong").value ;
+        function AddToCart(Id){
+            var exist = false;
+            for(i in cart)
+            {
+                if(cart[i].id==Id)
+                {
+                    cart[i].quantity +=1;
+                    exist=true;
+                } 
+            }
+                if(!exist)
+                {
+                    var product = {id:Id, quantity: 1 };
+                    cart.push(product);
+                    count=count+1;
+                    
+                }
+           window.localStorage.setItem("cart",JSON.stringify(cart));
+           window.localStorage.setItem("count",JSON.stringify(count));
+
+        }
+
+     </script>
+ }

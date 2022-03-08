@@ -80,6 +80,10 @@ namespace Rookie.Ecom.DataAccessor.Data
             {
                 entity.ToTable(name: "UserDetail");
             });
+            builder.Entity<Cart>(entity =>
+            {
+                entity.ToTable(name: "Cart");
+            });
         }
     }
 }

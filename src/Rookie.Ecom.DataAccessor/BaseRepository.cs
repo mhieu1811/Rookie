@@ -53,6 +53,20 @@ namespace Rookie.Ecom.DataAccessor
             }
             return await query.AsNoTracking().FirstOrDefaultAsync(filter);
         }
+        public async Task<IEnumerable<T>> GetListByAsync( string includeProperties = "")
+        {
+            IQueryable<T> query = _dbContext.Set<T>();
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+            return await query.AsNoTracking().ToListAsync();
+        }
 
         public async Task<T> GetByIdAsync(object id)
         {

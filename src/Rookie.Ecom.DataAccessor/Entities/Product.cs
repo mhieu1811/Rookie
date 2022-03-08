@@ -26,6 +26,9 @@ namespace Rookie.Ecom.DataAccessor.Entities
         public ICollection<ProductDetails> ProductDetails { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
         public ICollection<ProductPicture> ProductPictures { get; set; }
+        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
+
 
     }
 }

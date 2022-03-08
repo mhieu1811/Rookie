@@ -281,42 +281,37 @@
         </div>
     </div>
 
-     @section scripts{
+@section scripts{
      <script type="text/javascript">
          var cart =[];
-         if(window.localStorage)
+         var count = 0;
+         if(localStorage.getItem("cart") != null)
          {
              cart= JSON.parse(window.localStorage.getItem("cart"))
+             count= JSON.parse(window.localStorage.getItem("count"))
          }
          //var quantity =document.getElementById("soluong").value ;
-        function AddToCart(){
+        function AddToCart(Id){
             var exist = false;
             for(i in cart)
             {
-                if(cart[i].id=="@Model.Product.Id")
+                if(cart[i].id==Id)
                 {
-                    cart[i].quantity +=Math.floor(document.getElementById("soluong").value);
+                    cart[i].quantity +=1;
                     exist=true;
                 } 
             }
                 if(!exist)
                 {
-                    var product = {id:"@Model.Product.Id", quantity: Math.floor(document.getElementById("soluong").value) };
+                    var product = {id:Id, quantity: 1 };
                     cart.push(product);
-                    alert("A")
+                    count=count+1;
                     
                 }
            window.localStorage.setItem("cart",JSON.stringify(cart));
+           window.localStorage.setItem("count",JSON.stringify(count));
+
         }
-        function onChangeQuantity(choice) {
-        var num = parseInt(document.getElementById("soluong").value.toString());
-        if (choice === "0") {
-            if (num !== 1) {
-                document.getElementById("soluong").value = (num - 1).toString();
-            }
-        } else {
-            document.getElementById("soluong").value = (num + 1).toString();
-        }
-    }
+
      </script>
  }

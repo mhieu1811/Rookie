@@ -31,6 +31,7 @@ namespace Rookie.Ecom.Customer.Pages
         {
             ListProduct = await _productService.PagedQueryAsync(keyword, 1, 9, category);
             Category = await _categorytService.GetAllAsync();
+
             Keyword = keyword;
             CategoryId = category;
         }

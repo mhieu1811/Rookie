@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Rookie.Ecom.Contracts.Dtos
 {
-    public class RatingDto:BaseDto
+    public class CartDto:BaseDto
     {
-
+        public UserDto User { get; set; }  
         public Guid? UserID { get; set; }
-        public UserDto User { get; set; }
         public Guid? ProductID { get; set; }
         public ProductDto Product { get; set; }
-        public int Rate { get; set; }
-        public string Comment { get; set; }
+        public int Quantity    { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace Rookie.Ecom.DataAccessor.Entities
         [Required]
         [StringLength(maximumLength: 50)]
         public string CategoryName { get; set; }
+        public string? CategoryPicture { get; set; }
 
         public ICollection<ProductDetails> ProductDetails { get; set; }
     }

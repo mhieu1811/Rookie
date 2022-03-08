@@ -12,6 +12,7 @@ namespace Rookie.Ecom.Business.Interfaces
 
         Task<PagedResponseModel<CategoryDto>> PagedQueryAsync(string name, int page, int limit);
 
+        Task<IEnumerable<CategoryDto>> GetListAsync();
         Task<CategoryDto> GetByIdAsync(Guid id);
 
         Task<IEnumerable<CategoryDto>> GetByNameAsync(string name);

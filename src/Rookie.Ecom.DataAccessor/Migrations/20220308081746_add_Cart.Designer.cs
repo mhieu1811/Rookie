@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Rookie.Ecom.DataAccessor.Data;
 
 namespace Rookie.Ecom.DataAccessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220308081746_add_Cart")]
+    partial class add_Cart
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,6 +218,9 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("RatingId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("UnitPrice")
                         .HasColumnType("int");
 
@@ -227,6 +232,8 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                     b.HasIndex("OrderID");
 
                     b.HasIndex("ProductID");
+
+                    b.HasIndex("RatingId");
 
                     b.ToTable("OrderItem");
                 });
@@ -360,6 +367,9 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                     b.Property<Guid?>("CreatorId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("OrderID")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ProductID")
                         .HasColumnType("uniqueidentifier");
 
@@ -376,6 +386,8 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderID");
 
                     b.HasIndex("ProductID");
 
@@ -533,9 +545,15 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                         .WithMany("OrderItems")
                         .HasForeignKey("ProductID");
 
+                    b.HasOne("Rookie.Ecom.DataAccessor.Entities.Rating", "Rating")
+                        .WithMany()
+                        .HasForeignKey("RatingId");
+
                     b.Navigation("Order");
 
                     b.Navigation("Product");
+
+                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.DataAccessor.Entities.ProductDetails", b =>
@@ -568,13 +586,19 @@ namespace Rookie.Ecom.DataAccessor.Migrations
 
             modelBuilder.Entity("Rookie.Ecom.DataAccessor.Entities.Rating", b =>
                 {
+                    b.HasOne("Rookie.Ecom.DataAccessor.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderID");
+
                     b.HasOne("Rookie.Ecom.DataAccessor.Entities.Product", "Product")
-                        .WithMany("Ratings")
+                        .WithMany()
                         .HasForeignKey("ProductID");
 
                     b.HasOne("Rookie.Ecom.DataAccessor.Entities.User", "User")
                         .WithMany("Ratings")
                         .HasForeignKey("UserID");
+
+                    b.Navigation("Order");
 
                     b.Navigation("Product");
 
@@ -620,8 +644,6 @@ namespace Rookie.Ecom.DataAccessor.Migrations
                     b.Navigation("ProductDetails");
 
                     b.Navigation("ProductPictures");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("Rookie.Ecom.DataAccessor.Entities.User", b =>

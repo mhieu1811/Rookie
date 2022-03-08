@@ -183,7 +183,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                    <a href="/product/@p.Id" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
                                     <a onclick='AddToCart("@p.Id")' class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@
                         <nav aria-label="Page navigation">
                           <ul class="pagination justify-content-center mb-3">
                             
-                                @if(Model.ListProduct.CurrentPage<=1)
+                                @if(Model.ListProduct.CurrentPage>1)
                                 {
                                    <li class="page-item">
                                         <a class="page-link" asp-page="/listproduct" asp-route-currentpage="@(Model.ListProduct.CurrentPage-1)" aria-label="Previous">
@@ -212,7 +212,7 @@
                             }
 
                             
-                                @if (Model.ListProduct.CurrentPage != Model.ListProduct.TotalPages)
+                                @if (Model.ListProduct.CurrentPage != Model.ListProduct.TotalPages&& Model.ListProduct.TotalPages!=0)
                                 {
                                     <li class="page-item">
                                        <a class="page-link" asp-page="/listproduct" asp-route-currentpage="@(Model.ListProduct.CurrentPage+1)" aria-label="Next">

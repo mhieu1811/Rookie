@@ -1,4 +1,7 @@
-﻿@model Rookie.Ecom.Customer.Pages.SearchModel
+﻿@using Rookie.Ecom.Business.Interfaces
+@using Rookie.Ecom.Contracts.Dtos
+@using Rookie.Ecom.DataAccessor.Data
+@using Rookie.Ecom.DataAccessor.Entities
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -110,16 +113,7 @@
                             <a href="index.html" class="nav-item nav-link">Home</a>
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
                             <a href="detail.html" class="nav-item nav-link active">Shop Detail</a>
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Category</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    @foreach(var cate in Model.Category)
-                                        {
-                                             <a href="/search?category=@cate.Id" class="dropdown-item">@cate.CategoryName</a>
-                                        }
-                                       
-                                </div>
-                            </div>
+                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">

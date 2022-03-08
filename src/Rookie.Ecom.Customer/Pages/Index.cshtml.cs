@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
+using Rookie.Ecom.Business.Interfaces;
+using Rookie.Ecom.Contracts;
+using Rookie.Ecom.Contracts.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,16 +14,48 @@ namespace Rookie.Ecom.Customer.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categorytService;
+        private readonly ICartService _cartService;
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IndexModel(IProductService productService, ICategoryService categoryService, ICartService cartService)
         {
-            _logger = logger;
+
+            _productService = productService;
+            _categorytService = categoryService;
+            _cartService = cartService;
+        }
+        public string Keyword { get; set; }
+        public string CategoryId { get; set; }
+        public string Price { get; set; }
+        public PagedResponseModel<ProductDto> ListProduct { get; set; }
+        public IEnumerable<CategoryDto> Category { get; set; }
+
+        public async Task OnGet()
+        {
+            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null);
+            Category = await _categorytService.GetListAsync();
         }
 
-        public void OnGet()
-        {
+        [BindProperty]
+        public string pId { get; set; }
 
+        public async Task<IActionResult> OnPost(string pId)
+        {
+            CartDto cart = new CartDto();
+            cart.ProductID = Guid.Parse(pId);
+            cart.Id = Guid.NewGuid();
+            cart.CreatedDate = DateTime.Now;
+            cart.UpdatedDate = DateTime.Now;
+            cart.Pubished = true;
+            cart.Quantity = 1;
+            await _cartService.AddAsync(cart);
+
+
+
+            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null);
+            Category = await _categorytService.GetListAsync();
+            return Page();
         }
     }
 }

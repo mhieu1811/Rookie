@@ -27,6 +27,7 @@ namespace Rookie.Ecom.Business
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserDetailsService, UserDetailsService>();
+            services.AddTransient<ICartService, CartService>();
 
 
             services.AddRefitClient<IIdentityProviderService>()
