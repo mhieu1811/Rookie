@@ -5,8 +5,11 @@ namespace Rookie.Ecom.DataAccessor.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<Category> Category { get; set; }
         public DbSet<City> City { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductPicture> ProductPicture { get; set; }
+        public DbSet<ProductDetails> ProductDetails { get; set; }
 
 
 

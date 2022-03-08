@@ -1,0 +1,189 @@
+﻿@page 
+@model Rookie.Ecom.Customer.Pages.SearchModel
+@{
+}
+<div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a href="">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Shop</p>
+            </div>
+        </div>
+    </div>
+<div class="container-fluid pt-5">
+        <div class="row px-xl-5 justify-content-center ">
+            <!-- Shop Sidebar Start -->
+           <div class="col-lg-3 col-md-12">
+               <form>
+@*                   <input name="keyword" value="@Model.Keyword" hidden/>
+*@                   <div class="input-group border-bottom mb-4 pb-4">
+                        <input type="text" name="keyword" value="@Model.Keyword" class="form-control" placeholder="Search by name">
+                        <div class="input-group-append">
+                            <button type="submit" class="input-group-text bg-transparent text-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                <!-- Price Start -->
+                @*<div class="border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
+                    
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="price-all" value="" name="price">
+                            <label class="custom-control-label" for="price-all">All Price</label>
+                            <span class="badge border font-weight-normal">1000</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="price-1" value="price-1" name="price">
+                            <label class="custom-control-label" for="price-1">0 VNĐ ~ 100.000 VNĐ</label>
+                            <span class="badge border font-weight-normal">150</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="price-2" name="price">
+                            <label class="custom-control-label" for="price-2">100.000 VNĐ ~ 200.000 VNĐ</label>
+                            <span class="badge border font-weight-normal">295</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="price-3" name="price">
+                            <label class="custom-control-label" for="price-3">200.000 VNĐ - 300.000 VNĐ</label>
+                            <span class="badge border font-weight-normal">246</span>
+                        </div>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="radio" class="custom-control-input" id="price-4" name="price">
+                            <label class="custom-control-label" for="price-4"> >300.000 VNĐ </label>
+                            <span class="badge border font-weight-normal">145</span>
+                        </div>
+                    
+                </div>*@
+                 <div class="border-bottom mb-4 pb-4">
+                    <h5 class="font-weight-semi-bold mb-4">Filter by category</h5>
+                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            
+                            @if (string.IsNullOrEmpty(Model.CategoryId))
+                            {
+                                <input type="radio"  class="custom-control-input" id="cate-all" checked value="" name="category" onclick="this.form.submit()">
+                            }
+                            else
+                            {
+                                <input type="radio"  class="custom-control-input" id="cate-all" value="" name="category" onclick="this.form.submit()">
+
+                            }
+                                <label class="custom-control-label" for="cate-all">All Price</label>
+                         </div>
+                        @foreach(var c in Model.Category)
+                        {
+
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+
+                                @if (!string.IsNullOrEmpty(Model.CategoryId))
+                                {
+                                    if(c.Id == Guid.Parse(Model.CategoryId))
+                                    {
+                                        <input type="radio"  class="custom-control-input" id="@c.Id"  checked value="@c.Id" name="category" onclick="this.form.submit()">
+                                    }else
+                                    {
+                                        <input type="radio"  class="custom-control-input" id="@c.Id" value="@c.Id" name="category" onclick="this.form.submit()">
+
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="radio"  class="custom-control-input" id="@c.Id" value="@c.Id" name="category" onclick="this.form.submit()">
+
+                                }
+                                <label class="custom-control-label" for="@c.Id">@c.CategoryName</label>
+                            </div>
+                        }
+                    
+                        
+                  
+                   
+                </div>
+                 </form>
+            </div>
+            <!-- Shop Sidebar End -->
+
+
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-12">
+                
+                    @if(Model.ListProduct.TotalPages ==0)
+                    {
+                        <div class="row pb-3 justify-content-center ">
+                            <span class="te">Sorry, Nothing is here</span>
+                        </div>
+                    }
+                    else
+                    {
+                
+                        <div class="row pb-3">
+                                @foreach( var p in Model.ListProduct.Items)
+                                {
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                                        <div class="card product-item border-0 mb-4">
+                                            <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-2">
+                                                <img class="img-fluid w-100" src="@p.ProductPictures.ToArray()[0].PictureUrl" alt="">
+                                            </div>
+                                            <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                                                <h6 class="text-truncate mb-3">@p.ProductName</h6>
+                                                <div class="d-flex justify-content-center">
+                                                    <h6>@(String.Format("{0:0,0 vnđ}", p.Price))</h6>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer d-flex justify-content-between bg-light border">
+                                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
+                                                <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-12 pb-1">
+                                    <nav aria-label="Page navigation">
+                                      <ul class="pagination justify-content-center mb-3">
+                            
+                                            @if(Model.ListProduct.CurrentPage>1)
+                                            {
+                                               <li class="page-item">
+                                                    <a class="page-link" asp-page="/listproduct" asp-route-currentpage="@(Model.ListProduct.CurrentPage-1)" aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                        <span class="sr-only">Previous</span>
+                                                    </a>
+                                                </li>
+                                            }
+                              
+                            
+                                        @for (var i = 1; i <= Model.ListProduct.TotalPages; i++)
+                                        {
+                                            <li class="page-item @(i == Model.ListProduct.CurrentPage ? "active" : "")">
+                                                <a asp-page="/listproduct" asp-route-currentpage="@i" class="page-link">@i</a>
+                                            </li>
+                                        }
+
+                            
+                                            @if (Model.ListProduct.CurrentPage != Model.ListProduct.TotalPages && Model.ListProduct.TotalPages!= 0)
+                                            {
+                                                <li class="page-item">
+                                                   <a class="page-link" asp-page="/listproduct" asp-route-currentpage="@(Model.ListProduct.CurrentPage+1)" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                  </a>  
+                                              </li>
+                                            }
+                            
+                                      </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                    }
+            </div>
+            <!-- Shop Product End -->
+        </div>
+    </div>
+
+    @section scripts{
+        <script type="text/javascript">
+            
+        </script>
+    }

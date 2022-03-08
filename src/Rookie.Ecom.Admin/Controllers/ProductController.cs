@@ -53,6 +53,7 @@ namespace Rookie.Ecom.Admin.Controllers
         public async Task<IEnumerable<ProductDto>> GetAsync()
             => await _ProductService.GetAllAsync();
 
+
         /*[HttpGet("find")]
         public async Task<PagedResponseModel<ProductDto>>
             FindAsync(string name, int page = 1, int limit = 10)

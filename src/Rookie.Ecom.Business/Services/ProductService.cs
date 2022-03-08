@@ -15,12 +15,13 @@ namespace Rookie.Ecom.Business.Services
     public class ProductService : IProductService
     {
         private readonly IBaseRepository<Product> _baseRepository;
-        private readonly IBaseRepository<ProductDetails> test;
+        private readonly IBaseRepository<ProductDetails> _productdetails;
         private readonly IMapper _mapper;
 
-        public ProductService(IBaseRepository<Product> baseRepository, IMapper mapper)
+        public ProductService(IBaseRepository<Product> baseRepository, IBaseRepository<ProductDetails> productdetails, IMapper mapper)
         {
             _baseRepository = baseRepository;
+            _productdetails = productdetails;
             _mapper = mapper;
         }
 
@@ -59,9 +60,9 @@ namespace Rookie.Ecom.Business.Services
             // input-n vs db-yes => delete
             // input-y vs db-y => update
             // unique, distinct, no-duplicate
-            var Product = await _baseRepository.GetByIdAsync(id);
+            var Product = await _baseRepository.GetByAsync(m=>m.Id==id, "ProductPictures,ProductDetails,ProductDetails.Category");
 
-            return _mapper.Map<ProductDto>(Product );
+            return _mapper.Map<ProductDto>(Product);
         }
 
         /*public async Task<ProductDto> GetByNameAsync(string name) c 
@@ -70,17 +71,32 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<ProductDto>(Product);
         }*/
 
-        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string name, int page, int limit, Guid categoryID)
+        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string? name, int page, int limit, string? categoryID)
         {
             var query = _baseRepository.Entities;
-            query = query.Join(test.Entities, a => a.Id, b => b.ProductID, (a, b) => new { a, b }).Where(m => m.b.CategoryID.Equals(categoryID)).Select(n => n.a);
-            query = from d in query
-                   join lo in test.Entities on d.Id equals lo.ProductID
-                   where lo.CategoryID==categoryID || string.IsNullOrEmpty(categoryID.ToString())
-                   select d;
+            query = query.Include(m => m.ProductPictures).Include(n=>n.ProductDetails);
+            /*if (categoryID.Length != 0)
+            {
+                query = query.Include("ProductDetails").Include("Category");
+                foreach (var cate in categoryID)
+                {
+                    query = query.Join(test.Entities, a => a.Id, b => b.ProductID, (a, b) => new { a, b }).Where(m => m.b.CategoryID.Equals(cate)).Select(n => n.a);
+                }
+            }*/
+/*            query = from d in query
+                    join lo in _productdetails.Entities on d.Id equals lo.ProductID
+                    where string.IsNullOrEmpty(categoryID) || lo.CategoryID == Guid.Parse(categoryID)
+                    select d;*/
 
-/*            Guid g = Guid.Parse("3FA85F64-5717-4562-B3FC-2C963F66AFA6");
-*/            
+            /*            Guid g = Guid.Parse("3FA85F64-5717-4562-B3FC-2C963F66AFA6");
+            */
+            /*            var cate  = _productdetails.Entities.Where(m=> string.IsNullOrEmpty(categoryID)||m.CategoryID==Guid.Parse(categoryID));
+            */
+            query = query.Where(m => string.IsNullOrEmpty(categoryID) || m.ProductDetails.Any(n=>n.CategoryID== Guid.Parse(categoryID)));
+
+            /*            query = query.Join(test.Entities, a => a.Id, b => b.ProductID, (a, b) => new { a, b }).Where(m => m.b.CategoryID.Equals(categoryID)).Select(n => n.a);
+            */
+            query = query.Where(x => x.IsFeatured == true);  
             query = query.Where(x =>  string.IsNullOrEmpty(name)|| x.ProductName.Contains(name));
 
             query = query.OrderBy(x => x.ProductName);

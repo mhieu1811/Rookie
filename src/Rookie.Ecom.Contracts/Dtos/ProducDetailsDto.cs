@@ -12,8 +12,8 @@ namespace Rookie.Ecom.Contracts.Dtos
     {
 
         public Guid? CategoryID { get; set; }
-/*        public CategoryDto Category { get; set; }
-*/        public Guid? ProductID { get; set; }
+        public CategoryDto Category { get; set; }
+        public Guid? ProductID { get; set; }
 /*        public ProductDto Product { get; set; }
 */
     }
