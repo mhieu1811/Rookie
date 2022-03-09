@@ -60,7 +60,7 @@ namespace Rookie.Ecom.Business.Services
             // input-n vs db-yes => delete
             // input-y vs db-y => update
             // unique, distinct, no-duplicate
-            var Product = await _baseRepository.GetByAsync(m=>m.Id==id, "ProductPictures,ProductDetails,ProductDetails.Category");
+            var Product = await _baseRepository.GetByAsync(m=>m.Id==id, "ProductPictures,ProductDetails,ProductDetails.Category,Ratings");
 
             return _mapper.Map<ProductDto>(Product);
         }

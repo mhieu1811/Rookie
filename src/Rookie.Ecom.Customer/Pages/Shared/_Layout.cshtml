@@ -117,14 +117,33 @@
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
-                            <a href="" class="nav-item nav-link">Login</a>
-                            <a href="" class="nav-item nav-link">Register</a>
+                                @if (Context.User.Identity.IsAuthenticated)
+                                {
+                                    <a class="nav-item nav-link">Welcome, @User.Claims.Where(m=>m.Type=="given_name").SingleOrDefault().Value.ToString()  @User.Claims.Where(m=>m.Type=="family_name").SingleOrDefault().Value.ToString()</a>
+                                    <a href="/login" class="nav-item nav-link">Logout</a>
+                                }
+                                else
+                                {
+                                    <a href="/login" class="nav-item nav-link">Login</a>      
+                                    <a href="" class="nav-item nav-link">Register</a>
+                                }
                         </div>
                     </div>
                 </nav>
             </div>
         </div>
     </div>
+
+                           @* @if(Context.User.Identity.IsAuthenticated)
+                            {
+                                    var idToken = Microsoft.AspNetCore.Authentication.AuthenticationHttpContextExtensions.GetTokenAsync(Context, "id_token");
+                                    <a href="" class="nav-item nav-link">@idToken.Result</a>
+                                    foreach (var item in User.Claims)
+                                    {
+                                        <p>@item.Type: @item.Value</p>
+                                    }
+                                    
+                            }*@
         </div>
 
 

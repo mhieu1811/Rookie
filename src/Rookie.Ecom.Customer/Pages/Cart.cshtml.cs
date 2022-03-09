@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rookie.Ecom.Business.Interfaces;
@@ -15,8 +16,12 @@ namespace Rookie.Ecom.Customer.Pages
             _productService = productService;
             _ordertService = orderService;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            return Redirect("Index");
         }
+        /*public IActionResult OnPost()
+        {
+        }*/
     }
 }

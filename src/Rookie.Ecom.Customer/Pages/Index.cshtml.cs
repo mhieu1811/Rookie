@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
@@ -40,6 +41,7 @@ namespace Rookie.Ecom.Customer.Pages
         [BindProperty]
         public string pId { get; set; }
 
+        [Authorize]
         public async Task<IActionResult> OnPost(string pId)
         {
             CartDto cart = new CartDto();

@@ -4,8 +4,8 @@ const localhost = 'https://localhost:5011/';
 const identity = 'https://localhost:5001/';
 
 const userManagerConfig = {
-    client_id: 'rookieecom',
-    client_secret: 'rookieecom',
+    client_id: 'rookieecomadmin',
+    client_secret: 'rookieecomadmin',
     redirect_uri: `${localhost}callback`,
     post_logout_redirect_uri: `${localhost}`,
     response_type: 'id_token token',
