@@ -1,6 +1,8 @@
 ﻿using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
@@ -45,13 +47,13 @@ namespace Rookie.Ecom.Identity
         // identity-related resources (scopes)
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-           
+
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResource("roles", "Your role(s)", new List<string>() { "role" })
-            };
+                new IdentityResource("roles", "Your role(s)", new List<string>() { "role" }),
+                };
         }
 
         public static IEnumerable<Client> GetClients()

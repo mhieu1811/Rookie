@@ -64,8 +64,7 @@ namespace Rookie.Ecom.Customer
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 options.SlidingExpiration = true;
-            }
-            )
+            })
             .AddOpenIdConnect("oidc", options =>
             {
                 options.CallbackPath = "/signin-oidc";
@@ -79,6 +78,7 @@ namespace Rookie.Ecom.Customer
 
                 options.SaveTokens = true;
                 options.ClaimActions.MapUniqueJsonKey("role", "role");
+
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {

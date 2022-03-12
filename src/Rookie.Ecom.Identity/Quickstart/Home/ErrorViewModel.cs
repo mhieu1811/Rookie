@@ -3,10 +3,11 @@
 
 
 using IdentityServer4.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServerHost.Quickstart.UI
 {
-    public class ErrorViewModel
+    public class ErrorViewModel 
     {
         public ErrorViewModel()
         {

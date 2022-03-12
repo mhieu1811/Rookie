@@ -75,27 +75,7 @@ namespace Rookie.Ecom.Business.Services
         {
             var query = _baseRepository.Entities;
             query = query.Include(m => m.ProductPictures).Include(n=>n.ProductDetails);
-            /*if (categoryID.Length != 0)
-            {
-                query = query.Include("ProductDetails").Include("Category");
-                foreach (var cate in categoryID)
-                {
-                    query = query.Join(test.Entities, a => a.Id, b => b.ProductID, (a, b) => new { a, b }).Where(m => m.b.CategoryID.Equals(cate)).Select(n => n.a);
-                }
-            }*/
-/*            query = from d in query
-                    join lo in _productdetails.Entities on d.Id equals lo.ProductID
-                    where string.IsNullOrEmpty(categoryID) || lo.CategoryID == Guid.Parse(categoryID)
-                    select d;*/
-
-            /*            Guid g = Guid.Parse("3FA85F64-5717-4562-B3FC-2C963F66AFA6");
-            */
-            /*            var cate  = _productdetails.Entities.Where(m=> string.IsNullOrEmpty(categoryID)||m.CategoryID==Guid.Parse(categoryID));
-            */
             query = query.Where(m => string.IsNullOrEmpty(categoryID) || m.ProductDetails.Any(n=>n.CategoryID== Guid.Parse(categoryID)));
-
-            /*            query = query.Join(test.Entities, a => a.Id, b => b.ProductID, (a, b) => new { a, b }).Where(m => m.b.CategoryID.Equals(categoryID)).Select(n => n.a);
-            */
             query = query.Where(x => x.IsFeatured == true);  
             query = query.Where(x =>  string.IsNullOrEmpty(name)|| x.ProductName.Contains(name));
 
