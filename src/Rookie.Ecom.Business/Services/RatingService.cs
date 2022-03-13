@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using Rookie.Ecom.Business.Interfaces;
 using Rookie.Ecom.Contracts;
 using Rookie.Ecom.Contracts.Dtos;
@@ -30,6 +31,11 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<RatingDto>(item);
         }
 
+        public async Task<IEnumerable<RatingDto>> GetByProductAsync(Guid id)
+        {
+            var Rating =  await _baseRepository.GetListByAsync(m=>m.ProductID == id,"User");
+            return _mapper.Map<IEnumerable<RatingDto>>(Rating);
+        }
         public async Task DeleteAsync(Guid id)
         {
             await _baseRepository.DeleteAsync(id);

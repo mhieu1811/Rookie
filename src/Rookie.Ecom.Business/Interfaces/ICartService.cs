@@ -17,6 +17,9 @@ namespace Rookie.Ecom.Business.Interfaces
 /*        Task<CartDto> GetByNameAsync(string name);
 */
         Task<CartDto> AddAsync(CartDto categoryDto);
+        Task<IEnumerable<CartDto>> GetByUserAsync(Guid userID);
+        Task<CartDto> GetItemCartAsync(Guid userID, Guid productID);
+
 
         Task DeleteAsync(Guid id);
 

@@ -1,4 +1,5 @@
-﻿@using Rookie.Ecom.Business.Interfaces
+﻿@using Microsoft.AspNetCore.Http
+@using Rookie.Ecom.Business.Interfaces
 @using Rookie.Ecom.Contracts.Dtos
 @using Rookie.Ecom.DataAccessor.Data
 @using Rookie.Ecom.DataAccessor.Entities
@@ -91,7 +92,7 @@
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
-                <a href="" class="btn border">
+                <a href="/cart" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
@@ -119,12 +120,12 @@
                         <div class="navbar-nav ml-auto py-0">
                                 @if (Context.User.Identity.IsAuthenticated)
                                 {
-                                    <a class="nav-item nav-link">Welcome</a>
-                                    <a href="/login" class="nav-item nav-link">Logout</a>
+@*                                    <a class="nav-item nav-link">Welcome, @Context.User.Claims.Where(m=>m.Type=="FirstName").SingleOrDefault().Value</a>
+*@                                    <a href="/usermanager?key=logout" class="nav-item nav-link">Logout</a>
                                 }
                                 else
                                 {
-                                    <a href="/login" class="nav-item nav-link">Login</a>      
+                                    <a href="/usermanager?key=login" class="nav-item nav-link">Login</a>      
                                     <a href="" class="nav-item nav-link">Register</a>
                                 }
                         </div>

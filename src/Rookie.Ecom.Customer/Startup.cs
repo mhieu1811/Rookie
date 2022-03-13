@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace Rookie.Ecom.Customer
 {
@@ -52,8 +54,10 @@ namespace Rookie.Ecom.Customer
             services.AddRazorPages();
             services.AddHttpContextAccessor();
             services.AddBusinessLayer(Configuration);
+            services.AddMvc()
+                    .AddSessionStateTempDataProvider();
+            services.AddSession();
 
-                
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -62,15 +66,15 @@ namespace Rookie.Ecom.Customer
             .AddCookie("Cookies", options =>
             {
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
                 options.SlidingExpiration = true;
             })
             .AddOpenIdConnect("oidc", options =>
             {
                 options.CallbackPath = "/signin-oidc";
+                options.SignedOutCallbackPath = "/signout-callback-oidc";
                 options.SignInScheme = "Cookies";
                 options.Authority = "https://localhost:5001/";
-                options.RequireHttpsMetadata = true;
+                options.RequireHttpsMetadata = true;    
 
                 options.ClientId = "rookieecomcustomer";
                 options.ClientSecret = "rookieecomcustomer";
@@ -78,16 +82,19 @@ namespace Rookie.Ecom.Customer
 
                 options.SaveTokens = true;
                 options.ClaimActions.MapUniqueJsonKey("role", "role");
+                options.ClaimActions.MapUniqueJsonKey("FirstName", "FirstName");
+                options.ClaimActions.MapUniqueJsonKey("LastName", "LastName");
+                options.ClaimActions.MapUniqueJsonKey("Id", "Id");
 
                 options.GetClaimsFromUserInfoEndpoint = true;
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                /*options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     RoleClaimType = "role",
-                    NameClaimType = "given_name" + " " + "family_name"
-                };
+                };*/
                 options.Scope.Add("profile");
                 options.Scope.Add("roles");
                 options.Scope.Add("openid");
+                options.Scope.Add("objects");
             });
         }
 
@@ -110,12 +117,17 @@ namespace Rookie.Ecom.Customer
 
             app.UseRouting();
             app.UseAuthentication();
+            app.UseSession();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=home}/{action=Index}/{id?}");
+            
             });
         }
         private static void SetupIdentityServer(IdentityServerOptions options)
@@ -134,5 +146,6 @@ namespace Rookie.Ecom.Customer
             //options.EmitStaticAudienceClaim = true;
             //identityServerOptions.Authentication.CookieLifetime = TimeSpan.FromDays(1);
         }
+        
     }
 }

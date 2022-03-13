@@ -16,7 +16,7 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
     //     Store for test users
     public class UserStore
     {
-        private readonly List<IdentityUser> _users;
+        private readonly List<AppDbUser> _users;
 
         //
         // Summary:
@@ -25,7 +25,7 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
         // Parameters:
         //   users:
         //     The users.
-        public UserStore(List<IdentityUser> users)
+        public UserStore(List<AppDbUser> users)
         {
             _users = users;
         }
@@ -40,9 +40,9 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
         //
         //   password:
         //     The password.
-        public bool ValidateCredentials(string username, string password)
+        /*public bool ValidateCredentials(string username, string password)
         {
-            IdentityUser User = FindByUsername(username);
+            AppDbUser User = FindByUsername(username);
             if (User != null)
             {
                 if (string.IsNullOrWhiteSpace(User.PasswordHash) && string.IsNullOrWhiteSpace(password))
@@ -54,7 +54,7 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
             }
 
             return false;
-        }
+        }*/
 
         //
         // Summary:
@@ -75,9 +75,9 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
         // Parameters:
         //   username:
         //     The username.
-        public IdentityUser FindByUsername(string username)
+        public AppDbUser FindByUsername(string username)
         {
-            return _users.FirstOrDefault((IdentityUser x) => x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase));
+            return _users.FirstOrDefault((AppDbUser x) => x.UserName.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
 
         //
@@ -90,10 +90,10 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
         //
         //   userId:
         //     The user identifier.
-        public IdentityUser FindByExternalProvider(string provider, string userId)
+        /*public IdentityUser FindByExternalProvider(string provider, string userId)
         {
             return _users.FirstOrDefault((IdentityUser x) => x.UserName == provider && x.Id == userId);
-        }
+        }*/
 
         //
         // Summary:
@@ -108,7 +108,7 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
         //
         //   claims:
         //     The claims.
-        public IdentityUser AutoProvisionUser(string provider, string userId, List<Claim> claims)
+/*        public IdentityUser AutoProvisionUser(string provider, string userId, List<Claim> claims)
         {
             List<Claim> list = new List<Claim>();
             foreach (Claim claim in claims)
@@ -129,7 +129,7 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
 
             if (!list.Any((Claim x) => x.Type == "name"))
             {
-                string text = list.FirstOrDefault((Claim x) => x.Type == "UserName")?.Value;
+                string text = list.FirstOrDefault((Claim x) => x.Type == "id")?.Value;
                 string text2 = list.FirstOrDefault((Claim x) => x.Type == "username")?.Value;
                 if (text != null && text2 != null)
                 {
@@ -149,14 +149,12 @@ namespace Rookie.Ecom.Identity.Quickstart.Store
             string username = list.FirstOrDefault((Claim c) => c.Type == "name")?.Value ?? text3;
             IdentityUser testUser = new IdentityUser
             {
-           /*     SubjectId = text3,
-                Username = username,
-                ProviderName = provider,
-                ProviderSubjectId = userId,
-                Claims = list*/
+                UserName = username,
+                Id = userId
+              
             };
             _users.Add(testUser);
             return testUser;
         }
-    }
+*/    }
 }

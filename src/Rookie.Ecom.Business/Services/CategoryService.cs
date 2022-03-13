@@ -57,7 +57,7 @@ namespace Rookie.Ecom.Business.Services
             // input-n vs db-yes => delete
             // input-y vs db-y => update
             // unique, distinct, no-duplicate
-            var category = await _baseRepository.GetListByAsync("ProductDetails");
+            var category = await _baseRepository.GetListByAsync(m=>1==1,"ProductDetails");
             return _mapper.Map<IEnumerable<CategoryDto>>(category);
         }
 

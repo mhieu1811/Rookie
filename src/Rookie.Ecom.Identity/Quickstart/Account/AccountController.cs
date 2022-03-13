@@ -11,6 +11,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Rookie.Ecom.Identity.Data;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,17 +37,19 @@ namespace IdentityServerHost.Quickstart.UI
     {
         private readonly TestUserStore _users;
         private readonly Rookie.Ecom.Identity.Quickstart.Store.UserStore _context;
+        private readonly UserManager<AppDbUser> _userManager;
+        private readonly SignInManager<AppDbUser> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
         private readonly AppDbContext _appDbContext;
-        private readonly IUserClaimsPrincipalFactory<IdentityUser> _claimsFactory;
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-             IUserClaimsPrincipalFactory<IdentityUser> claimsFactory,
+              UserManager<AppDbUser> userManager,
+            SignInManager<AppDbUser> signInManager,
             IEventService events, AppDbContext appDbContext,
             TestUserStore users = null,
             Rookie.Ecom.Identity.Quickstart.Store.UserStore contexts =null)
@@ -53,11 +57,12 @@ namespace IdentityServerHost.Quickstart.UI
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _users = users ?? new TestUserStore(TestUsers.Users);
-            _context = contexts ?? new Rookie.Ecom.Identity.Quickstart.Store.UserStore(appDbContext.Users.ToList());
-            _interaction = interaction;
+/*            _context = contexts ?? new Rookie.Ecom.Identity.Quickstart.Store.UserStore(appDbContext.Users.ToList());
+*/            _interaction = interaction;
             _clientStore = clientStore;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _schemeProvider = schemeProvider;
-            _claimsFactory = claimsFactory;
             _events = events;
             _appDbContext = appDbContext;
             
@@ -120,18 +125,19 @@ namespace IdentityServerHost.Quickstart.UI
 
             if (ModelState.IsValid)
             {
+                
+                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberLogin, lockoutOnFailure: false);
                 // validate username/password against in-memory store
-                if (_context.ValidateCredentials(model.Username, model.Password))
+                if (result.Succeeded)
                 {
-                    
-                    var user = _context.FindByUsername(model.Username);
-                    var principal = await _claimsFactory.CreateAsync(user);
 
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
-                    var claims = principal.Claims.ToList();
+                    var user = await _userManager.FindByNameAsync(model.Username);
+/*                    var count = _userManager.GetClaimsAsync(user);
+*/                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
                     AuthenticationProperties props = null;
+                   
                     if (AccountOptions.AllowRememberLogin && model.RememberLogin)
                     {
                         props = new AuthenticationProperties
@@ -140,11 +146,12 @@ namespace IdentityServerHost.Quickstart.UI
                             ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
                         };
                     };
-
+                     var userClaim= await _userManager.GetClaimsAsync(user);
                     // issue authentication cookie with subject ID and username
                     var isuser = new IdentityServerUser(user.Id)
                     {
-                        DisplayName = user.UserName
+                        DisplayName = user.Id,
+                        AdditionalClaims= userClaim
                     };
 
                     await HttpContext.SignInAsync(isuser, props);
@@ -158,7 +165,6 @@ namespace IdentityServerHost.Quickstart.UI
                        
                         return this.LoadingPage("Redirect", model.ReturnUrl);
                         }
-                        claims.Add(new Claim("username", user.UserName));
                         
                         // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
                         return Redirect(model.ReturnUrl);
@@ -239,8 +245,12 @@ namespace IdentityServerHost.Quickstart.UI
                 // this triggers a redirect to the external provider for sign-out
                 return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
             }
+            /*if (vm.AutomaticRedirectAfterSignOut && !string.IsNullOrWhiteSpace(vm.PostLogoutRedirectUri))
+                return Redirect(vm.PostLogoutRedirectUri);*/
+            await _signInManager.SignOutAsync();
 
-            return View("LoggedOut", vm);
+            return View("LoggedOut", vm); 
+;
         }
 
         [HttpGet]
@@ -379,6 +389,64 @@ namespace IdentityServerHost.Quickstart.UI
             }
 
             return vm;
+        }
+
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            return View(new RegisterViewModel { ReturnUrl = returnUrl });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel vm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
+            var user = new AppDbUser
+            {
+                UserName=vm.Username,
+                Email = vm.Email,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                PhoneNumber = vm.PhoneNumber
+
+            };
+            // gather some context stuff
+
+            // gather the user manager
+
+            // add a country claim (given you have the userId)
+            var result = await _userManager.CreateAsync(user, vm.Password);
+
+            if (result.Succeeded)
+            {
+                
+                await _userManager.AddClaimsAsync( await _userManager.FindByNameAsync(vm.Username), new List<Claim>
+                                                                    {
+                                                                         new Claim("FirstName",user.FirstName),
+                                                                         new Claim("LastName",user.LastName),
+                                                                         new Claim("Id",user.Id),
+                                                                         new Claim("DayOfBirth",user.DateOfBirth.ToString("dd/MM/yyyy"))
+                                                                    });
+                var user_login= await _userManager.FindByNameAsync(vm.Username);
+                AuthenticationProperties props = null;
+
+                var userClaim = await _userManager.GetClaimsAsync(user_login);
+                // issue authentication cookie with subject ID and username
+                var isuser = new IdentityServerUser(user_login.Id)
+                {
+                    DisplayName = user_login.Id,
+                    AdditionalClaims = userClaim
+                };
+                await HttpContext.SignInAsync(isuser,props);
+                
+                 return Redirect(vm.ReturnUrl);
+            }
+
+            return View();
         }
     }
 }

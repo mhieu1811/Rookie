@@ -44,14 +44,7 @@ namespace Rookie.Ecom.Customer.Pages
         [Authorize]
         public async Task<IActionResult> OnPost(string pId)
         {
-            CartDto cart = new CartDto();
-            cart.ProductID = Guid.Parse(pId);
-            cart.Id = Guid.NewGuid();
-            cart.CreatedDate = DateTime.Now;
-            cart.UpdatedDate = DateTime.Now;
-            cart.Pubished = true;
-            cart.Quantity = 1;
-            await _cartService.AddAsync(cart);
+            
 
 
 

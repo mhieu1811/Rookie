@@ -29,7 +29,16 @@ namespace Rookie.Ecom.Business.Services
             var item = await _baseRepository.AddAsync(Cart);
             return _mapper.Map<CartDto>(item);
         }
-
+        public async Task<IEnumerable<CartDto>> GetByUserAsync(Guid userID)
+        {
+            var Cart = await _baseRepository.GetListByAsync(m =>m.UserId==userID,"Product,Product.ProductPictures");
+            return _mapper.Map<IEnumerable<CartDto>>(Cart);
+        }
+        public async Task<CartDto> GetItemCartAsync(Guid userID, Guid productID)
+        {
+            var Cart = await _baseRepository.GetByAsync(m => m.UserId == userID&&m.ProductId==productID);
+            return _mapper.Map<CartDto>(Cart);
+        }
         public async Task DeleteAsync(Guid id)
         {
             await _baseRepository.DeleteAsync(id);

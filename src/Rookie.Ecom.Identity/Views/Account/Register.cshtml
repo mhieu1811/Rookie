@@ -1,0 +1,70 @@
+@model RegisterViewModel
+
+<div class="login-page">
+    <div class="lead">
+        <h1>Login</h1>
+        <p>Choose how to login</p>
+    </div>
+
+    <partial name="_ValidationSummary" />
+
+    <div class="row">
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Local Account</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <form  asp-controller="Account" asp-action="Register" method="post">
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <div  >
+                                <label>Username</label>
+                                <input class="form-control" asp-for="Username" />
+                                <span asp-validation-for="Username"></span>
+                            </div>
+                            <div  >
+                                <label>First Name</label>
+                                <input class="form-control" asp-for="FirstName" />
+                                <span asp-validation-for="FirstName"></span>
+                            </div>
+                            <div  >
+                                <label>Last Name</label>
+                                <input class="form-control" asp-for="LastName" />
+                                <span asp-validation-for="LastName"></span>
+                            </div>
+                            <div  >
+                                <label>Email</label>
+                                <input class="form-control" asp-for="Email" />
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                            <div  >
+                                <label>Phone Number</label>
+                                <input class="form-control" asp-for="PhoneNumber" />
+                                <span asp-validation-for="PhoneNumber"></span>
+                            </div>
+                            <div  >
+                                <label>Password</label>
+                                <input class="form-control" class="form-control"  asp-for="Password" />
+                                <span asp-validation-for="Password"></span>
+                            </div>
+                            <div>
+                                <label> Confirm Password</label>
+                                <input class="form-control" class="form-control"  asp-for="ConfirmPassword" />
+                                <span asp-validation-for="ConfirmPassword"></span>
+                            </div>
+                            <div>
+                                <button  class="btn btn-primary" type="submit">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        
+
+        
+
+       
+    </div>
+</div>

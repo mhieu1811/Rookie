@@ -53,6 +53,7 @@ namespace Rookie.Ecom.Identity
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResource("roles", "Your role(s)", new List<string>() { "role" }),
+                new IdentityResource("objects",new List<string>{"FirstName","Id","LastName","DayOfBirth"})
                 };
         }
 
@@ -129,13 +130,13 @@ namespace Rookie.Ecom.Identity
                     },
                     PostLogoutRedirectUris = new List<string>()
                     {
-                        "https://localhost:5002/"
+                        "https://localhost:5002/signout-callback-oidc"
                     },
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "roles"
+                        "roles","objects"
                     },
                     ClientSecrets =
                     {

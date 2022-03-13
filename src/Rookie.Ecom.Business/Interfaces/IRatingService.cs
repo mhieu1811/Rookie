@@ -13,10 +13,12 @@ namespace Rookie.Ecom.Business.Interfaces
 /*        Task<PagedResponseModel<RatingDto>> PagedQueryAsync(string name, int page, int limit);
 */
         Task<RatingDto> GetByIdAsync(Guid id);
+        Task<IEnumerable<RatingDto>> GetByProductAsync(Guid id);
 
-/*        Task<RatingDto> GetByNameAsync(string name);
-*/
-        Task<RatingDto> AddAsync(RatingDto categoryDto);
+
+        /*        Task<RatingDto> GetByNameAsync(string name);
+        */
+        Task<RatingDto> AddAsync(RatingDto ratingDto);
 
         Task DeleteAsync(Guid id);
 

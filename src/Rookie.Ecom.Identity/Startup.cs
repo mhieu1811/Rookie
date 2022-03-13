@@ -12,6 +12,11 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Rookie.Ecom.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using IdentityServer4.AspNetIdentity;
+using Rookie.Ecom.Identity.Quickstart;
+using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace Rookie.Ecom.Identity
 {
@@ -47,12 +52,15 @@ namespace Rookie.Ecom.Identity
 
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<AppDbUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
             services.AddIdentityServer()
+                
                 .AddDeveloperSigningCredential()
 /*               .AddTestUsers(InitData.GetUsers())
 */                .AddConfigurationStore(options =>
@@ -69,12 +77,11 @@ namespace Rookie.Ecom.Identity
                             sql => sql.MigrationsAssembly(migrationsAssembly));
 
                     // this enables automatic token cleanup. this is optional.
-                    options.EnableTokenCleanup = true;
                     options.TokenCleanupInterval = 30;
-                });
-/*                .AddAspNetIdentity<AppDbContext>();
-*/            /*.AddInMemoryIdentityResources(InitData.GetIdentityResources())
-            .AddInMemoryClients(InitData.GetClients());*/
+                })
+                .AddAspNetIdentity<AppDbUser>()
+                .AddInMemoryIdentityResources(InitData.GetIdentityResources())
+                .AddInMemoryClients(InitData.GetClients());
 
 
         }
@@ -90,6 +97,7 @@ namespace Rookie.Ecom.Identity
             app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthorization();
             InitializeDatabase(app);
 
             /*app.UseCookiePolicy(new CookiePolicyOptions
@@ -111,6 +119,8 @@ namespace Rookie.Ecom.Identity
             {
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
+/*                userManager.AddClaimAsync(userManager.FindByNameAsync("User1").GetAwaiter().GetResult(), new Claim(ClaimTypes.Name, "Minh Hieu"));
+*/
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
                 if (!context.Clients.Any())

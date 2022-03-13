@@ -53,7 +53,7 @@ namespace Rookie.Ecom.DataAccessor
             }
             return await query.AsNoTracking().FirstOrDefaultAsync(filter);
         }
-        public async Task<IEnumerable<T>> GetListByAsync( string includeProperties = "")
+        public async Task<IEnumerable<T>> GetListByAsync(Expression<Func<T, bool>> filter = null, string includeProperties = "")
         {
             IQueryable<T> query = _dbContext.Set<T>();
 
@@ -65,7 +65,7 @@ namespace Rookie.Ecom.DataAccessor
                     query = query.Include(includeProperty);
                 }
             }
-            return await query.AsNoTracking().ToListAsync();
+            return await query.AsNoTracking().Where(filter).ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(object id)

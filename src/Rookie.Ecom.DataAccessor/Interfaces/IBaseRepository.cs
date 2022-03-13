@@ -17,7 +17,7 @@ namespace Rookie.Ecom.DataAccessor.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
 
         Task<T> AddAsync(T entity);
-        Task<IEnumerable<T>> GetListByAsync(string includeProperties = "");
+        Task<IEnumerable<T>> GetListByAsync(Expression<Func<T, bool>> filter = null, string includeProperties = "");
 
         Task UpdateAsync(T entity);
 
