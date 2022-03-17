@@ -71,15 +71,15 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<ProductDto>(Product);
         }*/
 
-        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string? name, int page, int limit, string? categoryID)
+        public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string? name, int page, int limit, string? categoryID, bool isFeature)
         {
             var query = _baseRepository.Entities;
             query = query.Include(m => m.ProductPictures).Include(n=>n.ProductDetails);
             query = query.Where(m => string.IsNullOrEmpty(categoryID) || m.ProductDetails.Any(n=>n.CategoryID== Guid.Parse(categoryID)));
-            query = query.Where(x => x.IsFeatured == true);  
+            query = query.Where(x => !isFeature || x.IsFeatured == true);  
             query = query.Where(x =>  string.IsNullOrEmpty(name)|| x.ProductName.Contains(name));
 
-            query = query.OrderBy(x => x.ProductName);
+            query = query.OrderByDescending(x => x.CreatedDate);
 
             var assets = await query
                 .AsNoTracking()

@@ -82,10 +82,13 @@ namespace Rookie.Ecom.Customer
 
                 options.SaveTokens = true;
                 options.ClaimActions.MapUniqueJsonKey("role", "role");
-                options.ClaimActions.MapUniqueJsonKey("FirstName", "FirstName");
-                options.ClaimActions.MapUniqueJsonKey("LastName", "LastName");
-                options.ClaimActions.MapUniqueJsonKey("Id", "Id");
+                    options.ClaimActions.MapUniqueJsonKey("FirstName", "FirstName");
+                    options.ClaimActions.MapUniqueJsonKey("LastName", "LastName");
+                    options.ClaimActions.MapUniqueJsonKey("Id", "Id");
+                options.ClaimActions.MapUniqueJsonKey("Email", "Email");
+                options.ClaimActions.MapUniqueJsonKey("Role", "Role");
 
+                options.ClaimActions.MapUniqueJsonKey("PhoneNumber", "PhoneNumber");
                 options.GetClaimsFromUserInfoEndpoint = true;
                 /*options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {

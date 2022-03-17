@@ -4,7 +4,9 @@
     <Authors>Rookies</Authors>
     <WarningsAsErrors />
   </PropertyGroup>
-
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
   <Choose>
     <When Condition=" '$(Configuration)'=='Debug' ">
       <PropertyGroup>

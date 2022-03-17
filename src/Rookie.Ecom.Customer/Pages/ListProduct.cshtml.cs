@@ -20,11 +20,11 @@ namespace Rookie.Ecom.Customer.Pages
         [BindProperty(SupportsGet = true)]
         public int CurrentPage { get; set; } = 1;
         public int Count { get; set; }
-        public int PageSize { get; set; } = 4;
+        public int PageSize { get; set; } = 9;
         public PagedResponseModel<ProductDto> ListProduct { get; set; }
         public async Task OnGet()
         {
-            ListProduct = await _productService.PagedQueryAsync(null,CurrentPage, PageSize,null);
+            ListProduct = await _productService.PagedQueryAsync(null,CurrentPage, PageSize,null,false);
         }
     }
 }

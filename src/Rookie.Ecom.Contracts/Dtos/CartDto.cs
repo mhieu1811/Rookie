@@ -11,7 +11,6 @@ namespace Rookie.Ecom.Contracts.Dtos
     public class CartDto:BaseDto
     {
         public Guid? UserId { get; set; }
-        public UserDto User { get; set; }
         public Guid? ProductId { get; set; }
         public ProductDto Product { get; set; }
         public int Quantity { get; set; }

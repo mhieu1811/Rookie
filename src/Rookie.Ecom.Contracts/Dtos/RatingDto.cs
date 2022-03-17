@@ -18,5 +18,7 @@ namespace Rookie.Ecom.Contracts.Dtos
         public ProductDto Product { get; set; }
         public int Rate { get; set; }
         public string Comment { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
     }
 }

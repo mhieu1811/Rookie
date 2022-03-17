@@ -29,7 +29,7 @@ namespace Rookie.Ecom.Customer.Pages
 
         public async Task OnGet(string keyword,string category)
         {
-            ListProduct = await _productService.PagedQueryAsync(keyword, 1, 9, category);
+            ListProduct = await _productService.PagedQueryAsync(keyword, 1, 9, category,false);
             Category = await _categorytService.GetAllAsync();
 
             Keyword = keyword;

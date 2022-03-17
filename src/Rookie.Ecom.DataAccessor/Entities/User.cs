@@ -23,7 +23,6 @@ namespace Rookie.Ecom.DataAccessor.Entities
         public string Password { get; set; }   
         public string PhoneNumber { get; set; } 
         public bool Status { get; set; }    
-        public ICollection<UserDetails> UserDetails { get; set; } 
         public ICollection<Address> Address { get; set; }
         public ICollection<Rating> Ratings { get; set; }
         public ICollection<Cart> Carts { get; set; }

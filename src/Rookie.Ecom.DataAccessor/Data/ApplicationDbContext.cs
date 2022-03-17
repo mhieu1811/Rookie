@@ -6,7 +6,6 @@ namespace Rookie.Ecom.DataAccessor.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Category> Category { get; set; }
-        public DbSet<City> City { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductPicture> ProductPicture { get; set; }
         public DbSet<ProductDetails> ProductDetails { get; set; }
@@ -38,14 +37,8 @@ namespace Rookie.Ecom.DataAccessor.Data
             {
                 entity.ToTable(name: "ProductPicture");
             });
-            builder.Entity<Address>(entity =>
-            {
-                entity.ToTable(name: "Address");
-            });
-            builder.Entity<City>(entity =>
-            {
-                entity.ToTable(name: "City");
-            });
+
+         
             builder.Entity<Order>(entity =>
             {
                 entity.ToTable(name: "Order");
@@ -68,7 +61,7 @@ namespace Rookie.Ecom.DataAccessor.Data
                 entity.ToTable(name: "Rating");
 
             });
-            builder.Entity<Role>(entity =>
+            /*builder.Entity<Role>(entity =>
             {
                 entity.ToTable(name: "Role");
             });
@@ -79,7 +72,7 @@ namespace Rookie.Ecom.DataAccessor.Data
             builder.Entity<UserDetails>(entity =>
             {
                 entity.ToTable(name: "UserDetail");
-            });
+            });*/
             builder.Entity<Cart>(entity =>
             {
                 entity.ToTable(name: "Cart");

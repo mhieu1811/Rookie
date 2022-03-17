@@ -49,18 +49,15 @@
         <div class="row px-xl-5 pb-3">
             @foreach(var cate in Model.Category)
             {
-                    <div class="col-lg-4 col-md-6 pb-1">
-                        <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                            <p class="text-right">@cate.ProductDetails.Count()</p>
-                            <a href="/search?category=@cate.Id" class="cat-img position-relative overflow-hidden mb-3">
-                                <img class="img-fluid" src="@cate.CategoryPicture" alt="">
-                            </a>
-                            
-                            <h5  class="font-weight-semi-bold m-0">@cate.CategoryName</h5>
-
-                        </div>
+                <div class="col-lg-4 col-md-6 pb-1 justify-content-center">
+                    <div class="  cat-item d-flex flex-column border mb-4 text-center" style="padding: 30px;">
+                        <p class="text-right">@cate.ProductDetails.Count()</p>
+                        <a href="/search?category=@cate.Id" class="cat-img position-relative overflow-hidden mb-3">
+                            <img class="img-fluid" src="https://localhost:5011/Picture/@cate.CategoryPicture" style="height:100px" alt="">
+                        </a>                           
+                        <h5  class="font-weight-semi-bold m-0">@cate.CategoryName</h5>
                     </div>
-                
+                </div>
             }
             
             
@@ -80,7 +77,8 @@
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="@p.ProductPictures.ToArray()[0].PictureUrl" alt="">
+                            <img class="img-fluid w-100" src="https://localhost:5011/Picture/@p.ProductPictures.ToArray()[0].PictureUrl" alt="">
+                            
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">@p.ProductName</h6>

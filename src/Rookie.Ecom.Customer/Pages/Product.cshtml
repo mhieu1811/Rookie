@@ -7,12 +7,27 @@
             <div class="col-lg-5 pb-5">
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner border">
-                        @foreach(var pic in Model.Product.ProductPictures)
+                        @for(int i =0; i< Model.Product.ProductPictures.ToArray().Length;i++)
                         {
-                            <div class="carousel-item active">
-                                <img class="w-100 h-100" src="@pic.PictureUrl" alt="Image">
-                            </div>
+                            if(i==0)
+                            {
+                                <div class="carousel-item active">
+                                        <img class="w-100 h-100" src="https://localhost:5011/Picture/@Model.Product.ProductPictures.ToArray()[i].PictureUrl"  alt="slide @(i + 1)">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="carousel-item">
+                                            <img class="w-100 h-100" src="https://localhost:5011/Picture/@Model.Product.ProductPictures.ToArray()[i].PictureUrl"  alt="slide @(i + 1)">
+                                    </div>
+                            }
                         }
+                        @*<div class="carousel-item active">
+                                <img class="w-100 h-100" src="https://localhost:5011/Picture/@Model.Product.ProductPictures.ToArray()[0].PictureUrl"  alt="slide @( 1)">
+                            </div>
+                            <div class="carousel-item ">
+                                <img class="w-100 h-100" src="https://localhost:5011/Picture/@Model.Product.ProductPictures.ToArray()[1].PictureUrl"  alt="slide @(2)">
+                            </div>*@
                     </div>
                     <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                         <i class="fa fa-2x fa-angle-left text-dark"></i>
@@ -27,14 +42,23 @@
                 <h3 class="font-weight-semi-bold">@Model.Product.ProductName</h3>
                 <div class="d-flex mb-3">
                     <div class="text-primary mr-2">
-                        @for (var i = 1; i <= @Model.Rating.Select(m=>m.Rate).Average(); i++)
+                        @if(Model.Rating.Count()!=0)
                         {
-                                <i class="fas fa-star"></i>                                                    
+                            for (var i = 1; i <= @Model.Rating.Select(m=>m.Rate).Average(); i++)
+                            {
+                                    <i class="fas fa-star"></i>                                                    
+                            }
+                            for (var i = (@Model.Rating.Select(m=>m.Rate).Average() + 1); i <= 5; i++)
+                            {
+                                <i class="far fa-star"></i>                                                    
+                            }                               
+                        }else{
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
                         }
-                        @for (var i = (@Model.Rating.Select(m=>m.Rate).Average() + 1); i <= 5; i++)
-                        {
-                            <i class="far fa-star"></i>                                                    
-                        }                               
                     </div>
                 @if (Model.Product.Ratings.Count() == 0)
                 {
@@ -106,7 +130,7 @@
                                     {
                                         <div class="media mb-4">
                                             <div class="media-body">
-                                                <h6>@rate.User.FirstName @rate.User.LastName<small> - <i>@rate.CreatedDate.ToString("dd/MM/yyyy")</i></small></h6>
+                                                <h6>@rate.FirstName @rate.LastName<small> - <i>@rate.CreatedDate.ToString("dd/MM/yyyy")</i></small></h6>
                                                     <div class="text-primary mb-2">
                                                         @for (var i = 1; i <= rate.Rate; i++)
                                                         {

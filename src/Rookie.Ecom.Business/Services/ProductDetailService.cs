@@ -59,7 +59,18 @@ namespace Rookie.Ecom.Business.Services
             var ProductDetails = await _baseRepository.GetByIdAsync(id);
             return _mapper.Map<ProductDetailsDto>(ProductDetails);
         }
-
+        public async Task<List<ProductDetailsDto>> GetByIdProductAsync(Guid id)
+        {
+            // map roles and users: collection (roleid, userid)
+            // upsert: delete, update, insert
+            // input vs db
+            // input-y vs db-no => insert
+            // input-n vs db-yes => delete
+            // input-y vs db-y => update
+            // unique, distinct, no-duplicate
+            var ProductPicture = _baseRepository.Entities.Where(m => m.ProductID == id).ToList();
+            return _mapper.Map<List<ProductDetailsDto>>(ProductPicture);
+        }
         /*public async Task<ProductDetailsDto> GetByNameAsync(string name)
         {
             var ProductDetails = await _baseRepository.GetByAsync(x => x.ProductDetailsName == name);

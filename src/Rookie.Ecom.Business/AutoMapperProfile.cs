@@ -15,15 +15,15 @@ namespace Rookie.Ecom.Business
         {
             CreateMap<CategoryDto, Category>();
             CreateMap<ProductDto, Product>();
-            CreateMap<AddressDto, Address>();
-            CreateMap<CityDto, City>();
             CreateMap<OrderItemDto, OrderItem>();
             CreateMap<OrderDto, Order>();
             CreateMap<ProductDetailsDto, ProductDetails>();
             CreateMap<RatingDto, Rating>();
-            CreateMap<RoleDto, Role>();
-            CreateMap<UserDetailsDto, UserDetails>();
             CreateMap<UserDto, User>();
+            CreateMap<AddressDto, Address>();
+            CreateMap<ProductCreateDto, Product>();
+            CreateMap<ProductDetailsUpdateDto, ProductDetails>();
+
             CreateMap<ProductPictureDto, ProductPicture>();
             CreateMap<CartDto, Cart>();
         }
@@ -34,14 +34,14 @@ namespace Rookie.Ecom.Business
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDetails, ProductDetailsDto>();
             CreateMap<ProductPicture, ProductPictureDto>();
+            CreateMap<User, UserDto>();
             CreateMap<Address, AddressDto>();
-            CreateMap<City, CityDto>();
             CreateMap<OrderItem, OrderItemDto>();
             CreateMap<Order, OrderDto>();
             CreateMap<Rating, RatingDto>();
-            CreateMap<Role, RoleDto>();
-            CreateMap<UserDetails, UserDetailsDto>();
-            CreateMap<User, UserDto>();
+            CreateMap<Product, ProductCreateDto>();
+            CreateMap<ProductDetails, ProductDetailsUpdateDto>();
+
             CreateMap<Cart, CartDto>();
         }
     }

@@ -47,7 +47,7 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<List<ProductPictureDto>>(categories);
         }
 
-        public async Task<ProductPictureDto> GetByIdAsync(Guid id)
+        public async Task<List<ProductPictureDto>> GetByIdProductAsync(Guid id)
         {
             // map roles and users: collection (roleid, userid)
             // upsert: delete, update, insert
@@ -56,9 +56,10 @@ namespace Rookie.Ecom.Business.Services
             // input-n vs db-yes => delete
             // input-y vs db-y => update
             // unique, distinct, no-duplicate
-            var ProductPicture = await _baseRepository.GetByIdAsync(id);
-            return _mapper.Map<ProductPictureDto>(ProductPicture);
+            var ProductPicture = _baseRepository.Entities.Where(m => m.ProductId == id).ToList();
+            return _mapper.Map<List<ProductPictureDto>>(ProductPicture);
         }
+
 
        /* public async Task<ProductPictureDto> GetByNameAsync(string name)
         {

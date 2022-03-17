@@ -34,23 +34,20 @@ namespace Rookie.Ecom.Customer.Pages
 
         public async Task OnGet()
         {
-            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null);
+            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null,true);
             Category = await _categorytService.GetListAsync();
         }
 
         [BindProperty]
         public string pId { get; set; }
 
-        [Authorize]
         public async Task<IActionResult> OnPost(string pId)
         {
-            
-
-
-
-            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null);
+           
+            ListProduct = await _productService.PagedQueryAsync(null, 1, 8, null,true);
             Category = await _categorytService.GetListAsync();
             return Page();
         }
+       
     }
 }

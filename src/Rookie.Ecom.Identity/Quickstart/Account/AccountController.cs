@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Rookie.Ecom.Identity.Data;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,8 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly TestUserStore _users;
         private readonly Rookie.Ecom.Identity.Quickstart.Store.UserStore _context;
         private readonly UserManager<AppDbUser> _userManager;
+        private readonly RoleManager<AppDbRole> _roleManager;
+
         private readonly SignInManager<AppDbUser> _signInManager;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
@@ -51,6 +54,7 @@ namespace IdentityServerHost.Quickstart.UI
               UserManager<AppDbUser> userManager,
             SignInManager<AppDbUser> signInManager,
             IEventService events, AppDbContext appDbContext,
+            RoleManager<AppDbRole> roleManager,
             TestUserStore users = null,
             Rookie.Ecom.Identity.Quickstart.Store.UserStore contexts =null)
         {
@@ -65,6 +69,7 @@ namespace IdentityServerHost.Quickstart.UI
             _schemeProvider = schemeProvider;
             _events = events;
             _appDbContext = appDbContext;
+            _roleManager = roleManager;
             
         }
 
@@ -248,7 +253,6 @@ namespace IdentityServerHost.Quickstart.UI
             /*if (vm.AutomaticRedirectAfterSignOut && !string.IsNullOrWhiteSpace(vm.PostLogoutRedirectUri))
                 return Redirect(vm.PostLogoutRedirectUri);*/
             await _signInManager.SignOutAsync();
-
             return View("LoggedOut", vm); 
 ;
         }
@@ -424,12 +428,16 @@ namespace IdentityServerHost.Quickstart.UI
             if (result.Succeeded)
             {
                 
+                await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(vm.Username), "Customer");
                 await _userManager.AddClaimsAsync( await _userManager.FindByNameAsync(vm.Username), new List<Claim>
                                                                     {
                                                                          new Claim("FirstName",user.FirstName),
                                                                          new Claim("LastName",user.LastName),
                                                                          new Claim("Id",user.Id),
-                                                                         new Claim("DayOfBirth",user.DateOfBirth.ToString("dd/MM/yyyy"))
+                                                                         new Claim("Role",user.UserRoles.First().Role.Name),                                                                         
+                                                                         new Claim("Email",user.Email),
+                                                                         new Claim("PhoneNumber",user.PhoneNumber)
+
                                                                     });
                 var user_login= await _userManager.FindByNameAsync(vm.Username);
                 AuthenticationProperties props = null;
@@ -445,8 +453,16 @@ namespace IdentityServerHost.Quickstart.UI
                 
                  return Redirect(vm.ReturnUrl);
             }
-
             return View();
+        }
+
+
+
+        [HttpGet]
+        public async Task<ActionResult<List<AppDbUser>>> GetListUser()
+        {
+            
+            return _userManager.Users.Include(u => u.UserRoles).ThenInclude(ur => ur.Role).ToList();
         }
     }
 }

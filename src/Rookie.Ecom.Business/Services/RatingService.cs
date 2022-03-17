@@ -33,7 +33,7 @@ namespace Rookie.Ecom.Business.Services
 
         public async Task<IEnumerable<RatingDto>> GetByProductAsync(Guid id)
         {
-            var Rating =  await _baseRepository.GetListByAsync(m=>m.ProductID == id,"User");
+            var Rating =  await _baseRepository.GetListByAsync(m=>m.ProductID == id);
             return _mapper.Map<IEnumerable<RatingDto>>(Rating);
         }
         public async Task DeleteAsync(Guid id)

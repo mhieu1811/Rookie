@@ -13,7 +13,7 @@ namespace Rookie.Ecom.Business.Interfaces
 /*        Task<PagedResponseModel<ProductDetailsDto>> PagedQueryAsync(string name, int page, int limit);
 */
         Task<ProductDetailsDto> GetByIdAsync(Guid id);
-        
+        Task<List<ProductDetailsDto>> GetByIdProductAsync(Guid id);
 
 
         /*        Task<ProductDetailsDto> GetByNameAsync(string name);*/

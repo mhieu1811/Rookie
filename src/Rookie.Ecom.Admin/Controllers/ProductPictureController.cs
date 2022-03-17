@@ -36,7 +36,7 @@ namespace Rookie.Ecom.Admin.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAssetAsync([FromRoute] Guid id)
         {
             var ProductPictureDto = await _ProductPictureService.GetByIdAsync(id);
@@ -47,7 +47,7 @@ namespace Rookie.Ecom.Admin.Controllers
 
         [HttpGet("{id}")]
         public async Task<ProductPictureDto> GetByIdAsync(Guid id)
-            => await _ProductPictureService.GetByIdAsync(id);
+            => await _ProductPictureService.GetByIdAsync(id);*/
 
         [HttpGet]
         public async Task<IEnumerable<ProductPictureDto>> GetAsync()

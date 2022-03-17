@@ -33,6 +33,8 @@ namespace Rookie.Ecom.Customer.Controllers
                 rate.ProductID= Guid.Parse(productId);
                 rate.Pubished = true;
                 rate.Rate = int.Parse(rating);
+                rate.FirstName = User.Claims.Where(m => m.Type == "FirstName").SingleOrDefault().Value.ToString();
+                rate.LastName = User.Claims.Where(m => m.Type == "LastName").SingleOrDefault().Value.ToString();
                 _ratingService.AddAsync(rate);
                 return Redirect("/product/" + productId);
 

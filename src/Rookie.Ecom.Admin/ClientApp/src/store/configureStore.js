@@ -4,6 +4,8 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import * as Counter from './Counter';
 import * as WeatherForecasts from './WeatherForecasts';
 import * as Category from './Category';
+import * as Product from './Product';
+
 import createOidcMiddleware from 'redux-oidc';
 import { reducer as oidc } from 'redux-oidc';
 import userManager from '../utils/userManager';
@@ -13,6 +15,7 @@ export default function configureStore(history, initialState) {
         categories: Category.reducer,
         counter: Counter.reducer,
         weatherForecasts: WeatherForecasts.reducer,
+        products: Product.reducer,
         oidc
     };
 

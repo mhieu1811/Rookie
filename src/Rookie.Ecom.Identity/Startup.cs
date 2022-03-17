@@ -55,7 +55,7 @@ namespace Rookie.Ecom.Identity
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services.AddIdentity<AppDbUser, IdentityRole>()
+            services.AddIdentity<AppDbUser, AppDbRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

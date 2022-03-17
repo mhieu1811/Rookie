@@ -37,8 +37,8 @@ namespace Rookie.Ecom.IntegrationTests
         {
             // Arrange
             var categoryService = new CategoryService(_categoryRepository, _mapper);
-            var categoryController = new CategoryController(categoryService);
-
+/*            var categoryController = new CategoryController(categoryService);
+*/
             var newCategory = new CategoryDto { CategoryName = "Test Category" };
 
             // Act
@@ -98,8 +98,8 @@ namespace Rookie.Ecom.IntegrationTests
             await _categoryRepository.AddAsync(category4);
 
             var categoryService = new CategoryService(_categoryRepository, _mapper);
-            var categoryController = new CategoryController(categoryService);
-
+/*            var categoryController = new CategoryController(categoryService);
+*/
             // Act
             var result = await categoryController.GetAsync();
 

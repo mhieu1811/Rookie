@@ -12,6 +12,5 @@ namespace Rookie.Ecom.Contracts.Dtos
     {
         public string AddressLine { get; set; }  
         public Guid? UserID { get; set; }
-        public Guid? CityID { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace Rookie.Ecom.Business.Interfaces
     {
         Task<IEnumerable<ProductPictureDto>> GetAllAsync();
 
-/*        Task<PagedResponseModel<ProductPictureDto>> PagedQueryAsync(string name, int page, int limit);
-*/
-        Task<ProductPictureDto> GetByIdAsync(Guid id);
+        /*        Task<PagedResponseModel<ProductPictureDto>> PagedQueryAsync(string name, int page, int limit);
+        */
+        Task<List<ProductPictureDto>> GetByIdProductAsync(Guid id);
 
 /*        Task<ProductPictureDto> GetByNameAsync(string name);
 */

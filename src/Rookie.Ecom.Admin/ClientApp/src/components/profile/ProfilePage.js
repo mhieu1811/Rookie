@@ -10,7 +10,7 @@ class ProfilePage extends Component {
           <div>
             <h1>Profile</h1>
             <div>
-              <h3>Welcome, {user.profile.given_name}!</h3>
+              <h3>Welcome, {user.profile.FirstName} {user.profile.LastName}!</h3>
             </div>
             <div>
               <table className="table">

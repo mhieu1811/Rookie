@@ -16,9 +16,7 @@ namespace Rookie.Ecom.Business
             services.AddDataAccessorLayer(configuration);
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddTransient<ICategoryService, CategoryService>();
-            services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IAddressService, AddressService>();
-            services.AddTransient<ICityService, CityService>();
+
             services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<IOrderItemService, OrderItemService>();
             services.AddTransient<IProductService, ProductService>();
@@ -26,7 +24,10 @@ namespace Rookie.Ecom.Business
             services.AddTransient<IProductDetailsService, ProductDetailsService>();
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserDetailsService, UserDetailsService>();
+            services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IStorageService, FileStorageService>();
+            services.AddTransient<IProductCreateService, ProductCreateService>();
+
             services.AddTransient<ICartService, CartService>();
 
 

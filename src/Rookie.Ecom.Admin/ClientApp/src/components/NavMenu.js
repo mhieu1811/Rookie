@@ -30,8 +30,8 @@ class NavMenu extends React.Component {
     }
     render() {
         const { user, isAuthenticated } = this.props;
-        const isAdmin = isAuthenticated && user.profile['role'] === 'Admin';
-
+        const isAdmin = isAuthenticated && user.profile['Role'] === 'Admin';
+        console.log(user)
         const onLoginButtonClick = event => {
             event.preventDefault();
             userManager.signinRedirect();

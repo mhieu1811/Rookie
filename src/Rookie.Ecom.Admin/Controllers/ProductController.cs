@@ -1,4 +1,5 @@
 ﻿using EnsureThat;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookie.Ecom.Business.Interfaces;
 using Rookie.Ecom.Contracts;
@@ -6,6 +7,7 @@ using Rookie.Ecom.Contracts.Constants;
 using Rookie.Ecom.Contracts.Dtos;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Rookie.Ecom.Admin.Controllers
@@ -14,16 +16,19 @@ namespace Rookie.Ecom.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _ProductService;
-        public ProductController(IProductService ProductService)
+        private readonly IProductCreateService _ProductCreateService;
+
+        public ProductController(IProductService ProductService, IProductCreateService ProductCreateService)
         {
             _ProductService = ProductService;
+            _ProductCreateService = ProductCreateService;
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDto>> CreateAsync([FromBody] ProductDto ProductDto)
+        public async Task<ActionResult<ProductCreateDto>> CreateAsync([FromForm] ProductCreateDto ProductDto)
         {
             Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
-            var asset = await _ProductService.AddAsync(ProductDto);
+            var asset = await _ProductCreateService.AddAsync(ProductDto);
             return Created(Endpoints.Product, asset);
         }
 
@@ -54,9 +59,13 @@ namespace Rookie.Ecom.Admin.Controllers
             => await _ProductService.GetAllAsync();
 
 
-        /*[HttpGet("find")]
+        [HttpGet("find")]
         public async Task<PagedResponseModel<ProductDto>>
             FindAsync(string name, int page = 1, int limit = 10)
-            => await _ProductService.PagedQueryAsync(name, page, limit);*/
+            => await _ProductService.PagedQueryAsync(name, page, limit,null,false);
+
+
+
+        
     }
 }
