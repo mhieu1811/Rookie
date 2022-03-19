@@ -10,5 +10,6 @@ namespace Rookie.Ecom.Business.Interfaces
     public interface IProductCreateService
     {
         Task<ProductCreateDto> AddAsync(ProductCreateDto categoryDto);
+        Task UpdateAsync(ProductCreateDto ProductDto);
     }
 }

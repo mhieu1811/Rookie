@@ -111,7 +111,7 @@ namespace Rookie.Ecom.Business.Services
                 prodetail.Pubished = true;
                 prodetail.CreatedDate = DateTime.Now;
                 prodetail.UpdatedDate = DateTime.Now;
-                await _productdetails.AddAsync(prodetail);
+                    await _productdetails.AddAsync(prodetail);
             }
         }
 

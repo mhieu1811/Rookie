@@ -60,17 +60,16 @@ namespace Rookie.Ecom.Business.Services
             return _mapper.Map<UserDto>(User);
         }
 
-       /* public async Task<UserDto> GetByNameAsync(string name)
+        /*public async Task<UserDto> GetByNameAsync(string name)
         {
             var User = await _baseRepository.GetByAsync(x => x.UserName == name);
             return _mapper.Map<UserDto>(User);
-        }
+        }*/
 
-        public async Task<PagedResponseModel<UserDto>> PagedQueryAsync(string name, int page, int limit)
+        public async Task<PagedResponseModel<UserDto>> PagedQueryAsync( int page, int limit)
         {
             var query = _baseRepository.Entities;
 
-            query = query.Where(x => string.IsNullOrEmpty(name) || x.UserName.Contains(name));
 
             query = query.OrderBy(x => x.UserName);
 
@@ -85,7 +84,7 @@ namespace Rookie.Ecom.Business.Services
                 TotalItems = assets.TotalItems,
                 Items = _mapper.Map<IEnumerable<UserDto>>(assets.Items)
             };
-        }*/
+        }
 
     }
 }

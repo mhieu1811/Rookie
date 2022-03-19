@@ -33,10 +33,10 @@ namespace Rookie.Ecom.Admin.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateAsync([FromBody] ProductDto ProductDto)
+        public async Task<ActionResult> UpdateAsync([FromForm] ProductCreateDto ProductDto)
         {
             Ensure.Any.IsNotNull(ProductDto, nameof(ProductDto));
-            await _ProductService.UpdateAsync(ProductDto);
+            await _ProductCreateService.UpdateAsync(ProductDto);
 
             return NoContent();
         }

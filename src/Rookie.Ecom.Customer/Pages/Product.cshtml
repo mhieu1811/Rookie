@@ -44,11 +44,11 @@
                     <div class="text-primary mr-2">
                         @if(Model.Rating.Count()!=0)
                         {
-                            for (var i = 1; i <= @Model.Rating.Select(m=>m.Rate).Average(); i++)
+                            for (var i = 1; i <= Math.Ceiling(Model.Rating.Select(m=>m.Rate).Average()); i++)
                             {
                                     <i class="fas fa-star"></i>                                                    
                             }
-                            for (var i = (@Model.Rating.Select(m=>m.Rate).Average() + 1); i <= 5; i++)
+                            for (var i = (Math.Ceiling(Model.Rating.Select(m=>m.Rate).Average()) + 1); i <= 5; i++)
                             {
                                 <i class="far fa-star"></i>                                                    
                             }                               
@@ -182,7 +182,7 @@
 
     <!-- Products Start -->
     <div class="container-fluid py-5">
-        <div class="text-center mb-4">
+        @*<div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
         </div>
         <div class="row px-xl-5">
@@ -266,7 +266,7 @@
 
                 </div>
             </div>
-        </div>
+        </div>*@
     </div>
 
 @section scripts{

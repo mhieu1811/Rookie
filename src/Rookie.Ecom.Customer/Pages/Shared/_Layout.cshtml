@@ -87,13 +87,9 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
-                </a>
                 <a href="/cart" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">Cart</span>
                 </a>
             </div>
         </div>
@@ -110,10 +106,8 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="index.html" class="nav-item nav-link">Home</a>
-                            <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="detail.html" class="nav-item nav-link active">Shop Detail</a>
-                            
+                            <a href="/" class="nav-item nav-link">Home</a>
+                            <a href="/listproduct" class="nav-item nav-link">Shop</a>                            
                             <a href="contact.html" class="nav-item nav-link">Contact</a>
                         </div>
                         <div class="navbar-nav ml-auto py-0">
@@ -125,7 +119,6 @@
                                 else
                                 {
                                     <a href="/usermanager?key=login" class="nav-item nav-link">Login</a>      
-                                    <a href="" class="nav-item nav-link">Register</a>
                                 }
                         </div>
                     </div>
@@ -134,16 +127,6 @@
         </div>
     </div>
 
-                            @if(Context.User.Identity.IsAuthenticated)
-                            {
-                                    var idToken = Microsoft.AspNetCore.Authentication.AuthenticationHttpContextExtensions.GetTokenAsync(Context, "id_token");
-                                    <a href="" class="nav-item nav-link">@idToken.Result</a>
-                                    foreach (var item in User.Claims)
-                                    {
-                                        <p>@item.Type: @item.Value</p>
-                                    }
-                                    
-                            }
         </div>
 
 

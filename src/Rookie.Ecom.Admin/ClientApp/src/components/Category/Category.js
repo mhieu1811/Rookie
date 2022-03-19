@@ -25,12 +25,21 @@ class Category extends Component {
     }
 
     render() {  
+        const { user, categories} = this.props;               
         return (
             <div>
-                <h1>Weather forecast</h1>
-                <p>This component demonstrates fetching data from the server and working with URL parameters.</p>
-                {renderCategoryTable(this.props)}
-                {renderPagination(this.props)}
+                {(user !== null && user.profile['Role']==='Admin')?(
+
+                    <div>
+                        <h1>Category</h1>
+                        <Link to="/addcate">Add Category</Link>
+                        {renderCategoryTable(categories)}
+                        {renderPagination(categories)}
+                        
+                    </div>
+                ):(
+                    <h1>Please Login</h1>
+                )}
             </div>
         );
             }
@@ -56,18 +65,18 @@ function renderCategoryTable(props) {
             <table className='table table-striped'>
                 <thead>
                     <tr>
+                        <th>Picture</th>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Desc</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {props.categories.map(cat =>
                         <tr key={cat.id}>
+                            <td><img src={`https://localhost:5011/Picture/${cat.categoryPicture}`} style={{height:"30px"}}/></td>
                             <td>{cat.id}</td>
                             <td>{cat.categoryName}</td>
-                            <td>{cat.desc}</td>
                             <td><a href={'/editcate/'+cat.id}>Edit</a></td>
                         </tr>
                     )}
@@ -87,8 +96,13 @@ function renderPagination(props) {
         {props.isLoading ? <span>Loading...</span> : []}
     </p>;
 }
-
+function mapStateToProps(state) {
+    return {
+       user: state.oidc.user,
+        isAuthenticated: state.oidc.user && !state.oidc.user.expired
+    };
+}
 export default connect(
-    state => state.categories,
+    state => ({ categories: state.categories, user: state.oidc.user}),
     dispatch => bindActionCreators(actionCreators, dispatch)
 )(Category);

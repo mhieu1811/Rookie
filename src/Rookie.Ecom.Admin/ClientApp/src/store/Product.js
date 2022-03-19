@@ -15,6 +15,7 @@ export const actionCreators = {
         const response = await fetch(url);
         const data = await response.json();
         const products = data.items;
+        console.log(products)
         dispatch({ type: receiveProductType, page, products });
     }
 };

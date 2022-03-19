@@ -1,0 +1,50 @@
+.text-center{
+    text-align: center;
+}
+
+.clear{
+    clear: both;
+}
+
+.edit-product-right{
+    float: left;
+    width: 70%;
+}
+
+.edit-product-left{
+    float: left;
+    width: 30%;
+}
+
+.edit-product-right-group{
+    display: flex;
+    margin: 12px 0;
+    align-items: center;
+}
+
+.edit-product-right-group-label{
+    min-width: 80px;
+}
+
+.edit-product-right-group-input{
+    flex: 1;
+    
+}
+
+.add-product-right-group{
+    display: flex;
+    margin: 12px auto;
+    width: 80%;
+    align-items: center;
+}
+
+.btnAdd{
+    float: right;
+}
+
+.edit-btn{
+    clear: both;
+    width: 80%;
+    margin: 5px auto;
+}
+

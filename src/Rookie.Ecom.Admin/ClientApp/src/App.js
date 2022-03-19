@@ -15,10 +15,14 @@ import Product from './components/Product/Product';
 import AddCategory from './components/Category/AddCategory';
 import EditCategory from './components/Category/EditCategory';
 import AddProduct from './components/Product/AddProduct';
-import PicturesWall from './components/Product/test';
+import EditProduct from './components/Product/EditProduct';
+import { Component } from 'react/cjs/react.production.min';
+import { Button } from 'antd';
+import userManager from '../src/utils/userManager';
+import User from './components/User/User';
 
 
-export default () => (
+                    export default () => (
 
                         <Layout>
                             <Route exact path="/" component={Home} />
@@ -27,14 +31,61 @@ export default () => (
                             <Route path="/fetch-data/:startDateIndex?" component={FetchData} />
                             <Route path="/addcate" component={AddCategory} />
                             <Route path="/addpro" component={AddProduct} />
-                            <Route path="/test" component={PicturesWall} />
+                            <Route path="/editpro/:id" component={EditProduct} />
 
                             <Route path="/editcate/:id" component={EditCategory} />
                             <Route path="/callback" component={CallbackPage} />
                             <Route path="/product/:page?" component={Product} />
+                            <Route path="/user/:page?" component={User} />
+
                             <Route path="/profile" component={ProfilePage} />
                         </Layout>
     
                     );
-        
 
+                    // class App extends React.Component{
+                        
+                    //     render(){
+                    //         const { user, isAuthenticated } = this.props;
+                    //         const isAdmin = isAuthenticated && user.profile['Role'] === 'Admin';
+                           
+                    //             return(
+                    //                 <Layout>
+                    //                     {/* {isAdmin ?(
+                    //                             <Route exact path="/" component={Home} />
+                    //                             <Route path="/counter" component={Counter} />
+                    //                             <Route path="/category/:page?" component={Category} />
+                    //                             <Route path="/fetch-data/:startDateIndex?" component={FetchData} />
+                    //                             <Route path="/addcate" component={AddCategory} />
+                    //                             <Route path="/addpro" component={AddProduct} />
+                    //                             <Route path="/editpro/:id" component={EditProduct} />
+                    //                             <Route path="/editcate/:id" component={EditCategory} />
+                    //                             <Route path="/callback" component={CallbackPage} />
+                    //                             <Route path="/product/:page?" component={Product} />
+                    //                             <Route path="/user/:page?" component={User} />
+                    //                             <Route path="/profile" component={ProfilePage} />
+                    //                     ):( */}
+                    //                             <Route exact path="/" component={Home} />
+                    //                             <Route path="/callback" component={CallbackPage} />
+                                            
+                    //                     {/* )} */}
+                    //                 </Layout>
+                                        
+        
+                    //             )
+
+                            
+                                
+                                
+                            
+                    //     }
+                    // }
+        
+function mapStateToProps(state) {
+  return {
+    user: state.oidc.user,
+    isAuthenticated: state.oidc.user && !state.oidc.user.expired
+  };
+}
+
+// export default connect(mapStateToProps)(App);

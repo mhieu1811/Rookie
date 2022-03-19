@@ -1,15 +1,16 @@
 import React, { Component, useEffect, useState } from 'react';
- import { Form, Input, Button,Select, DatePicker,Checkbox, InputNumber, Space, Skeleton,Upload ,notification,UploadOutlined} from 'antd';
+ import { Form, Input, Button,Select, DatePicker,Checkbox, InputNumber, Space, Skeleton,Upload ,notification,Carousel} from 'antd';
 // import CurrencyInput from 'react-currency-input-field';
 import moment from 'moment';
 import { get } from 'jquery';
-import {  getList, getListcate } from '../../Service/CategoryService';
-import { add,editpro } from '../../Service/ProductService';
+import {  edit, getList, getListcate } from '../../Service/CategoryService';
+import { add,getobject,editpro } from '../../Service/ProductService';
 import {Redirect} from 'react-router-dom'
 import FormItem from 'antd/lib/form/FormItem';
 import TextArea from 'antd/lib/input/TextArea';
 // import "./AddProduct.css"
-export default  function AddProduct() {
+export default  function EditProduct(props) {
+    const {id}=props.match.params;
     const date = Date.now();
     let today= new Date(date);
     function createGuid()  
@@ -23,16 +24,27 @@ export default  function AddProduct() {
 
     const [form] = Form.useForm();   
     const[cate,setCate]=useState([])
-
-    const[pic,setPicture]=useState([])
-
-
+    const[product, setProduct] = useState();
+    const[checkedCate, setCatechecked] = useState([]);
+    var temp=[]
     useEffect(()=>{
         
-        getListcate().then(res=>setCate(res))
-        console.log(cate)
+          getListcate().then(res=>setCate(res))
+          const abc=   getobject(id).then(res=>{
+                                 setProduct(res);
+                                    res.productDetails.forEach(element => {
+                                    temp.push(element.categoryID)
+                                    setCatechecked(temp)
+                                });
+                            })
+                console.log(product)
+          
+        
     },[])
-
+    const onChangeCate =(list)=>{
+        setCatechecked(list);
+    }
+    console.log(product)
       const onFinishFailed = (errorInfo) => {
           
         console.log('Failed:', errorInfo);
@@ -40,35 +52,37 @@ export default  function AddProduct() {
 
       const [status, setStatus]=useState(false);
     const onFinish = async (values) => {
-        values.Id=createGuid();
-        values.CreatedDate =new Date().toISOString();
+
+        values.Id=product.id;
+        values.CreatedDate=product.createdDate
         values.UpdatedDate = new Date().toISOString();
-        values.Status =true;
-        console.log(values)
+        console.log(values.Cate)
         var bodyFormData = new FormData();
         for ( var key in values ) {
             if(key!="Picture"&& key!="Cate"){
                 bodyFormData.append(key, values[key]);
             }
         }
-        for(var x = 0; x < values.Picture.fileList.length; x++) {
-            // the name has to be 'files' so that .NET could properly bind it
-            console.log( values.Picture.fileList[x].originFileObj)
-            bodyFormData.append('Picture', values.Picture.fileList[x].originFileObj);    
-        }
-        for(var x = 0; x < values.Cate.length; x++) {
-            // the name has to be 'files' so that .NET could properly bind it
-            bodyFormData.append('Cate', values.Cate[x]);    
-        }
+        if(values.Picture!=null)
+        {
 
-        console.log(bodyFormData.data)
-        const res =await add(bodyFormData)
+            for(var x = 0; x < values.Picture.length; x++) {
+                // the name has to be 'files' so that .NET could properly bind it
+                bodyFormData.append('Picture', values.Picture.item(x));    
+            }
+        }
+            for(var x = 0; x < checkedCate.length; x++) {
+                // the name has to be 'files' so that .NET could properly bind it
+                bodyFormData.append('Cate', checkedCate[x]);    
+            }
+
+
+        const res =await editpro(bodyFormData)
         console.log(res.status)
-        if(res.status==201){
-            openNotificationWithIcon('success','Add Product Success','Done')           
-            form.resetFields();        // <Redirect to="/" />
+        if(res.status==204){
+            openNotificationWithIcon('success','Edit Product Success','Done')           
         }else{
-            openNotificationWithIcon('error','Add Product Failed','Please try again')           
+            openNotificationWithIcon('error','Edit Product Failed','Please try again')           
         }
       };
 
@@ -79,57 +93,61 @@ export default  function AddProduct() {
            desc,
         });
       };
+const onClick=()=>{
+    console.log(product)
+}
         return (
 
             <div style={{marginTop:'30px'}}>
-                
-                <h1 style={{textAlign:'center',fontWeight:'bold',textTransform:'uppercase'}}>Add Product</h1>
+                <h1 style={{textAlign:'center',fontWeight:'bold',textTransform:'uppercase'}}>Edit Product</h1>
+                {(product===undefined||cate.length===0)?(<Skeleton/>):(
                 <div className="container">
+                    {console.log(checkedCate)}
                     <div className="row">
-                        {/* <div className="col-lg-3">
-                            <div className="col--detail--1">
-                            <img src={pic[0]}  /> */}
+                        <div className="col-lg-3">
+                        <Carousel>
+                            {product.productPictures.map((e)=>{
+                                return (
+                                    <div>
+                                        <img style={{height:'250px'}} src= {`https://localhost:5011/Picture/${e.pictureUrl}`} />
+                                    </div>
+                                )
+                            })}
+                            
+                            {/* <div>
+                            <h3 style={contentStyle}>2</h3>
+                            </div>
+                            <div>
+                            <h3 style={contentStyle}>3</h3>
+                            </div>
+                            <div>
+                            <h3 style={contentStyle}>4</h3>
+                            </div> */}
+                        </Carousel>
+                            {/* <div className="col--detail--1">
+                            <img src={pic[0]}  />  */}
                             {/* <h1>Select Image</h1> */}
                             {/* <input type="file" name="myImage" onChange={handleFileInput} style={{marginTop:'10px',cursor: 'pointer'}} /> */}
                             {/* <p>Nếu không thêm hình, thì sẽ lấy ảnh default</p>
-                            </div>
-                        </div> */}
+                            </div> */}
+                        </div> 
                         <div className="col-lg-8 ">
                         <Form 
                             form={form}
                                 onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                             className="col-lg-8-detalis"
+                            initialValues={product}
                         >
-                            {/* <FormItem>
-                                <Upload
-                                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                    listType="picture-card"
-                                    fileList={fileList}
-                                    onPreview={this.handlePreview}
-                                    onChange={this.handleChange}
-                                    >
-                                    {fileList.length >= 8 ? null : uploadButton}
-                                </Upload>
-                                <Modal
-                                visible={previewVisible}
-                                title={previewTitle}
-                                footer={null}
-                                onCancel={this.handleCancel}
-                                >
-                                <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                                </Modal>
-        
-                            </FormItem> */}
                             <Form.Item
-                                name="ProductName"
+                                name="productName"
                                 rules={[
                                     { required: true, message: 'Không được bỏ trống tên voucher' },
                                 ]}
                                 label="Product Name: "
                                 className="form__row"
                             >
-                                <Input  placeholder="Product Name ..."/>
+                                <Input initialValues={product.productName} placeholder="Product Name ..."/>
                             </Form.Item>
                     
                     
@@ -159,20 +177,32 @@ export default  function AddProduct() {
                             <Form.Item
                                 name="Cate"
                                     rules={[
-                                        { required: true, message: 'Chose at least one category' },
+                                        {validator(value){
+                                            if(checkedCate.length>0)
+                                            {
+                                                return Promise.resolve()
+                                            }
+                                            else
+                                                return Promise.reject(new Error('Required'));
+                                            
+                                            
+                                        }},
                                     ]}
                                 label="Catgory"
                                 className="form__row"
+                                valuePropName={checkedCate}
+                                defaultValue={checkedCate}
+
                             >
-                            {cate.length===0?<Skeleton/>:
-                                <Checkbox.Group>
+                                <Checkbox.Group onChange={onChangeCate} value={checkedCate} >
                                     <Space wrap >
                                         {
                                             cate.map((val)=>{
                                             return <Checkbox key={val.id} value={val.id}>{val.categoryName}</Checkbox>
                                         })}
                                     </Space>
-                                </Checkbox.Group>}   
+                                </Checkbox.Group>       
+                            
                             </Form.Item>
                         
 
@@ -197,8 +227,9 @@ export default  function AddProduct() {
                                 >
                                 <Input id="price" type="number"  className="form__input" />
                             </Form.Item>
+
                             <Form.Item
-                                name="Desc"
+                                name="desc"
                                 label="Description"
                                 className="form__row"
                                 rules={[
@@ -206,74 +237,67 @@ export default  function AddProduct() {
                                 ]}
                             >
                                 
-                                <TextArea type="number" className="form__input"/>
+                                <TextArea type="number"  className="form__input"/>
                             </Form.Item>
                             <Form.Item
-                                name="Picture"
+                                name="pictures"
                                 label="Picture"
                                 className="form__row"
-                                rules={[
-                                    { required: true, message: 'Chose at least one category' }                             
-                                ]}
+                                
                                 valuePropName= 'files'
                                 >
-                                        <Upload
-                                             action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
-                                            //  onChange = {handleChange}
-                                            accept="image/png, image/jpeg"                                             
-                                            multiple = {true}
-                                        >
-                                             <Button > Upload</Button>
-                                        </Upload>  
-                                        {/* <input type='file'/> */}
+                                        <input type='file' multiple/>
                             </Form.Item>
                             <Form.Item
-                                name="IsFeatured"
+                                name="isFeatured"
                                 label="IsFeatured:"
                                 className="form__row"
                                 valuePropName= 'checked'
 
                                 >
-                                <input type="checkbox"  className="form__input" />
+                                <Checkbox  className="form__input" />
+                            </Form.Item>
+                            <Form.Item
+                                name="status"
+                                label="Status:"
+                                className="form__row"
+                                valuePropName= 'checked'
+                                >
+                                <Checkbox  className="form__input"/>
                             </Form.Item>
                             <Form.Item
                                 name="Id"
                                 className="form__row"
                                 hidden
                                 >
-                                <input type="text"  className="form__input" />
+                                <input type="text"defaultValue={product.id}  className="form__input" />
                             </Form.Item>
                             <Form.Item
                                 name="CreatedDate"
                                 className="form__row"
                                 hidden
                                 >
-                                <input type="text"  className="form__input" />
+                                
+                                <input type="text" defaultValue={product.createdDate} className="form__input" />
                             </Form.Item>
                             <Form.Item
                                 name="UpdatedDate"
                                 className="form__row"
                                 hidden
                                 >
-                                <input type="text"  className="form__input" />
+                                <input type="text" defaultValue={product.updatedDate} className="form__input" />
                             </Form.Item>
-                            <Form.Item
-                                name="Status"
-                                className="form__row"
-                                hidden
-                                >
-                                <input type="text"  className="form__input" onChange={(e)=>console.log(e.target.value)} />
-                            </Form.Item>
+                            
                             <Form.Item className="form-btn-login">
                                 <Button type="primary" htmlType="submit" className="btn--them text-right btn btn-primary" >
-                                    Thêm
+                                    Sửa
                                 </Button>
                             </Form.Item>
                     </Form>
         
                         </div>
                     </div>
-                </div>
+                </div>)}
             </div>)
 
       

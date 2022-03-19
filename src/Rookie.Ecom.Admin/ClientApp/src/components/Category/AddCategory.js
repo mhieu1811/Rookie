@@ -6,6 +6,8 @@ import { actionCreators } from '../../store/Category';
 import axios from 'axios';
 import { post } from 'jquery';
 import {add} from '../../Service/CategoryService'
+import { Input,Button ,Image,notification} from 'antd';
+import './Category.css'
 
 
 export default  function AddCategory() {
@@ -52,6 +54,13 @@ export default  function AddCategory() {
         }));
         console.log(cate)
     }
+    const openNotificationWithIcon = (type,title,desc) => {
+        notification[type]({
+          message: title,
+          description:
+           desc,
+        });
+      };
     const btnOnClick=async ()=>{
         var bodyFormData = new FormData();
         bodyFormData.append("CategoryName",cate.CategoryName)
@@ -63,6 +72,13 @@ export default  function AddCategory() {
         bodyFormData.append("Id",cate.id)
         const response = await add(bodyFormData)
         console.log(bodyFormData)
+
+        if(response.status==201){
+            openNotificationWithIcon('success','Add Product Success','Done')         
+            window.location.reload();  
+        }else{
+            openNotificationWithIcon('error','Add Product Failed','Please try again')           
+        }
         // const response = await axios.post("https://localhost:5011/api/Category",cate) 
         // const get = await axios.get("https://localhost:5011/api/Category")
         // console.log(get.data)
@@ -87,21 +103,34 @@ export default  function AddCategory() {
                     )}
                 </tbody>
                 </table> */}
+        <h1 className='text-center'>Add Category</h1>
+        <div className='add-product-right-group'>
+            <label for='CategoryName' className="edit-product-right-group-label">Hinhf</label>
 
-        <img src={cate.categoryPicture}/>
-        <input
-            value={cate.categoryName}
-            type="text"
-            onChange={handleChange}
-            name="CategoryName"
-        />
-       <input
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={handleChangeFile}
-            name="picture"
-        />
-        <button onClick={btnOnClick}>Confirm Edit</button>
+            <Input
+                value={cate.categoryName}
+                type="text"
+                onChange={handleChange}
+                name="CategoryName"
+                className="edit-product-right-group-input"
+            />
+        </div>
+
+        <div className='add-product-right-group'>
+            <label for='picture' className="edit-product-right-group-label">Hinhf</label>
+            <Input
+                type="file"
+                accept="image/png, image/jpeg"
+                onChange={handleChangeFile}
+                name="picture"
+                className="edit-product-right-group-input"
+            />
+
+        </div>
+        <div className='edit-btn'>
+            <Button onClick={btnOnClick} className="btnAdd">Add</Button>
+
+        </div>
             </div>
      
     );

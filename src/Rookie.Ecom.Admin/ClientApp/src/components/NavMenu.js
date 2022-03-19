@@ -51,7 +51,7 @@ class NavMenu extends React.Component {
                 >
                     <Container>
                         <NavbarBrand tag={Link} to="/">
-                            Rookie.Ecom.Admin
+                            Admin
             </NavbarBrand>
                         <NavbarToggler onClick={this.toggle} className="mr-2" />
                         <Collapse
@@ -71,13 +71,13 @@ class NavMenu extends React.Component {
                   </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">
-                                        Counter
+                                    <NavLink tag={Link} className="text-dark" to="/product">
+                                        Product
                   </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">
-                                        Fetch data
+                                    <NavLink tag={Link} className="text-dark" to="/user">
+                                        User
                   </NavLink>
                                 </NavItem>
 

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { actionCreators } from '../../store/Product';
+import { actionCreators } from '../../store/User';
 
-class Product extends Component {
+class User extends Component {
     componentDidMount() {
         // This method is called when the component is first added to the document
         this.ensureDataFetched();
@@ -19,25 +19,25 @@ class Product extends Component {
         console.log(this.props.match.params.page);
         const page = parseInt(this.props.match.params.page, 5) || 0;
         console.log(page);
-        this.props.requestProducts(page);
+        this.props.requestUsers(page);
     }
 
-    render() {  
-        const { user, products} = this.props;               
-
+    render() {
+        const { user, users} = this.props;               
+  
         return (
+
             <div>
-                {(user !== null && user.profile['Role']==='Admin')?(
-                    <div>
-                        <h1>Product</h1>
-                        <Link to="/addpro">Add Category</Link>
-                        {renderProductTable(products)}
-                        {renderPagination(products)}
+               {(user !== null && user.profile['Role']==='Admin')?(
+                       <div>
+                        <h1>UpdatedDate</h1>
+                        {renderProductTable(users)}
+                        {renderPagination(users)}
                         
                     </div>
-                    ):(
+                   ):(
                         <h1>Please Login</h1>
-                        )}
+                    )}
             </div>
         );
             }
@@ -50,21 +50,22 @@ function renderProductTable(props) {
             <table className='table table-striped'>
                 <thead>
                     <tr>
-                        <th>Picture</th>
-                        <th>Name</th>
-                        <th>Desc</th>
-                        <th>Price</th>
-                        <th></th>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {props.products.map(pro =>
+                    {props.users.map(pro =>
                         <tr key={pro.id}>
-                            <td><img src={`https://localhost:5011/Picture/${pro.productPictures[0].pictureUrl}`} style={{height:"30px"}}></img></td>
-                            <td>{pro.productName}</td>
-                            <td>{pro.quantity}</td>
-                            <td>{pro.price.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</td>
-                            <td><a href={'/editpro/'+pro.id}>Edit</a></td>
+                            <td>{pro.id}</td>
+                            <td>{pro.firstName}</td>
+                            <td>{pro.lastName}</td>
+                            <td>{pro.email}</td>
+                            <td>{pro.phoneNumber}</td>
+
                         </tr>
                     )}
                 </tbody>
@@ -74,8 +75,8 @@ function renderProductTable(props) {
 }
 
 function renderPagination(props) {
-    const prevStartDateIndex = (props.page || 0) - 1;
-    const nextStartDateIndex = (props.page || 0) + 1;
+    const prevStartDateIndex = (props.page || 0) - 5;
+    const nextStartDateIndex = (props.page || 0) + 5;
 
     return <p className='clearfix text-center'>
         <Link className='btn btn-default pull-left' to={`/product/${prevStartDateIndex}`}>Previous</Link>
@@ -85,6 +86,6 @@ function renderPagination(props) {
 }
 
 export default connect(
-    state => ({ products: state.products, user: state.oidc.user, isAuthenticated: state.oidc.user && !state.oidc.user.expired}),
+    state => ({ users: state.users, user: state.oidc.user, isAuthenticated: state.oidc.user && !state.oidc.user.expired}),
     dispatch => bindActionCreators(actionCreators, dispatch)
-)(Product);
+)(User);
