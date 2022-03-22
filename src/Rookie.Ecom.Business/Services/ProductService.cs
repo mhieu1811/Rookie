@@ -74,6 +74,7 @@ namespace Rookie.Ecom.Business.Services
         public async Task<PagedResponseModel<ProductDto>> PagedQueryAsync(string? name, int page, int limit, string? categoryID, bool isFeature)
         {
             var query = _baseRepository.Entities;
+            query = query.Where(x => x.Status == true);
             query = query.Include(m => m.ProductPictures).Include(n=>n.ProductDetails);
             query = query.Where(m => string.IsNullOrEmpty(categoryID) || m.ProductDetails.Any(n=>n.CategoryID== Guid.Parse(categoryID)));
             query = query.Where(x => !isFeature || x.IsFeatured == true);  

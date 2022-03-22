@@ -56,19 +56,20 @@ export default  function EditProduct(props) {
         values.Id=product.id;
         values.CreatedDate=product.createdDate
         values.UpdatedDate = new Date().toISOString();
-        console.log(values.Cate)
+        console.log(values)
         var bodyFormData = new FormData();
         for ( var key in values ) {
             if(key!="Picture"&& key!="Cate"){
                 bodyFormData.append(key, values[key]);
             }
         }
-        if(values.Picture!=null)
+        if(values.pictures!=null)
         {
 
-            for(var x = 0; x < values.Picture.length; x++) {
+            for(var x = 0; x < values.pictures.fileList.length; x++) {
                 // the name has to be 'files' so that .NET could properly bind it
-                bodyFormData.append('Picture', values.Picture.item(x));    
+                console.log( values.pictures.fileList[x].originFileObj)
+                bodyFormData.append('Picture', values.pictures.fileList[x].originFileObj);    
             }
         }
             for(var x = 0; x < checkedCate.length; x++) {
@@ -81,6 +82,7 @@ export default  function EditProduct(props) {
         console.log(res.status)
         if(res.status==204){
             openNotificationWithIcon('success','Edit Product Success','Done')           
+            window.location.reload();  
         }else{
             openNotificationWithIcon('error','Edit Product Failed','Please try again')           
         }
@@ -105,15 +107,14 @@ const onClick=()=>{
                     {console.log(checkedCate)}
                     <div className="row">
                         <div className="col-lg-3">
-                        <Carousel>
+                        <Carousel autoplay>
                             {product.productPictures.map((e)=>{
                                 return (
                                     <div>
-                                        <img style={{height:'250px'}} src= {`https://localhost:5011/Picture/${e.pictureUrl}`} />
+                                        <img style={{height:'250px', width:'250px'}} src= {`https://localhost:5011/Picture/${e.pictureUrl}`} alt={e.id} />
                                     </div>
                                 )
-                            })}
-                            
+                            })}     
                             {/* <div>
                             <h3 style={contentStyle}>2</h3>
                             </div>
@@ -246,7 +247,15 @@ const onClick=()=>{
                                 
                                 valuePropName= 'files'
                                 >
-                                        <input type='file' multiple/>
+                                     <Upload
+                                             action= 'https://www.mocky.io/v2/5cc8019d300000980a055e76'
+                                            //  onChange = {handleChange}
+                                            accept="image/png, image/jpeg"                                             
+                                            multiple = {true}
+                                        >
+                                             <Button > Upload</Button>
+                                        </Upload>  
+                                        {/* <input type='file' multiple/> */}
                             </Form.Item>
                             <Form.Item
                                 name="isFeatured"

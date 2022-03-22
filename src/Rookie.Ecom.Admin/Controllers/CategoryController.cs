@@ -35,6 +35,7 @@ namespace Rookie.Ecom.Admin.Controllers
             Ensure.Any.IsNotNull(categoryDto, nameof(categoryDto));
             categoryDto.CategoryPicture = await this.SaveFile(categoryDto.Picture);
             var asset = await _categoryService.AddAsync(categoryDto);
+
             return Created(Endpoints.Category, asset);
         }
 

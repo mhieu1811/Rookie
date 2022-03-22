@@ -71,6 +71,8 @@ export default function EditCategory(props) {
 
         if (response.status == 204) {
             openNotificationWithIcon('success', 'Add Product Success', 'Done')
+            window.location.reload();  
+
         } else {
             openNotificationWithIcon('error', 'Add Product Failed', 'Please try again')
         }
